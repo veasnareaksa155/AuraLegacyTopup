@@ -1,0 +1,465 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Custom modern glowing scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #070913;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.2);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 254, 0.45);
+  }
+
+  /* Mobile App Input & Tap Optimization */
+  input, select, textarea, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevents iOS Safari from auto-zooming viewport when focusing input fields on mobile */
+  @media (max-width: 640px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    select,
+    textarea {
+      font-size: 16px !important;
+      min-height: 44px;
+    }
+  }
+}
+
+@layer utilities {
+  /* Ultra-sleek glassmorphism optimized for 60-120fps GPU performance */
+  .glass-card {
+    background: rgba(11, 16, 32, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .glass-panel {
+    background: rgba(13, 20, 40, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  /* Glass Solid Style: Crisp high-opacity frosted glass with clean tactile elevation */
+  .glass-solid {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  }
+
+  html.dark .glass-solid {
+    background: rgba(8, 12, 26, 0.97) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .glass-solid-btn {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+    transition: all 0.15s ease;
+  }
+
+  html.dark .glass-solid-btn {
+    background: rgba(18, 25, 48, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .glass-solid-btn:hover {
+    border-color: rgba(6, 182, 212, 0.6);
+    box-shadow: 0 4px 14px 0 rgba(6, 182, 212, 0.15);
+  }
+
+  html.dark .glass-solid-btn:hover {
+    border-color: rgba(0, 242, 254, 0.6) !important;
+    box-shadow: 0 4px 18px 0 rgba(0, 242, 254, 0.25) !important;
+  }
+
+  .glass-solid-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.12), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+  }
+
+  html.dark .glass-solid-card {
+    background: rgba(12, 18, 38, 0.97) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7) !important;
+  }
+
+  .glass-input {
+    background: rgba(10, 15, 30, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .glass-input:focus {
+    border-color: rgba(0, 242, 254, 0.6);
+    box-shadow: 0 0 20px -3px rgba(0, 242, 254, 0.3);
+  }
+
+  .aura-text-gradient {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #9d4edd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .aura-text-gold {
+    background: linear-gradient(135deg, #ffe066 0%, #ffb703 50%, #fb8500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.4), rgba(157, 78, 221, 0.4), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    display: inline-flex;
+    animation: marquee 28s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* ============================================================
+   LIGHT MODE AESTHETICS & HIGH-CONTRAST STYLING
+   ============================================================ */
+html:not(.dark),
+html.light {
+  color-scheme: light;
+}
+
+html:not(.dark) body,
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Light mode Glass Containers */
+html:not(.dark) .glass-card,
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.05), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+}
+
+html:not(.dark) .glass-panel,
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.03);
+}
+
+/* Opaque frosted glass for top sticky navigation header */
+html:not(.dark) header.sticky nav,
+html.light header.sticky nav {
+  background: rgba(255, 255, 255, 0.97) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06) !important;
+}
+
+html.dark header.sticky nav {
+  background: rgba(7, 9, 19, 0.95) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Explicit Dark mode Glass Containers ensuring dark background overrides any light utility */
+html.dark .glass-card,
+html.dark .dark\:glass-card {
+  background: rgba(11, 16, 32, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45) !important;
+  color: #ffffff !important;
+}
+
+html.dark .glass-panel,
+html.dark .dark\:glass-panel {
+  background: rgba(13, 20, 40, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+html.dark .glass-input,
+html.dark .dark\:glass-input {
+  background: rgba(10, 15, 30, 0.80) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+html:not(.dark) .glass-input,
+html.light .glass-input {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  color: #0f172a !important;
+}
+
+html:not(.dark) .glass-input:focus,
+html.light .glass-input:focus {
+  border-color: rgba(6, 182, 212, 0.8);
+  box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.25);
+}
+
+html:not(.dark) .glass-input::placeholder,
+html.light .glass-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Light mode scrollbar */
+html:not(.dark) ::-webkit-scrollbar-track,
+html.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html:not(.dark) ::-webkit-scrollbar-thumb,
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.35);
+}
+html:not(.dark) ::-webkit-scrollbar-thumb:hover,
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.65);
+}
+
+/* Light mode borders */
+html:not(.dark) .border-white\/5,
+html:not(.dark) .border-white\/10,
+html:not(.dark) .border-white\/15,
+html:not(.dark) .border-white\/20,
+html.light .border-white\/5,
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20 {
+  border-color: rgba(226, 232, 240, 0.9) !important;
+}
+
+/* Light mode subtle container backgrounds */
+html:not(.dark) .bg-white\/5,
+html:not(.dark) .bg-white\/10,
+html.light .bg-white\/5,
+html.light .bg-white\/10 {
+  background-color: rgba(241, 245, 249, 0.85) !important;
+}
+
+/* Preserve white text in dark showcase elements & hero banners */
+.preserve-dark h1,
+.preserve-dark h2,
+.preserve-dark h3,
+.preserve-dark .text-white {
+  color: #ffffff !important;
+}
+.preserve-dark p,
+.preserve-dark .text-slate-300 {
+  color: #cbd5e1 !important;
+}
+
+/* Light mode typography colors */
+html:not(.dark) h1:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html:not(.dark) h2:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html:not(.dark) h3:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html:not(.dark) h4:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html:not(.dark) h5:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html:not(.dark) h6:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html.light h1:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html.light h2:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html.light h3:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html.light h4:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html.light h5:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold),
+html.light h6:not(.preserve-dark *):not([class*="bg-clip-text"]):not(.aura-text-gradient):not(.aura-text-gold) {
+  color: #0f172a;
+}
+
+html:not(.dark) .glass-card,
+html:not(.dark) .glass-panel,
+html.light .glass-card,
+html.light .glass-panel {
+  color: #1e293b;
+}
+
+html:not(.dark) .text-slate-100:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white),
+html.light .text-slate-100:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white) {
+  color: #0f172a;
+}
+
+html:not(.dark) .text-slate-200:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white),
+html.light .text-slate-200:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white) {
+  color: #1e293b;
+}
+
+html:not(.dark) .text-slate-300:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white),
+html.light .text-slate-300:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white) {
+  color: #334155;
+}
+
+html:not(.dark) .text-slate-400:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white),
+html.light .text-slate-400:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(span[class*="bg-"]):not(.keep-white) {
+  color: #64748b;
+}
+
+html:not(.dark) .text-white:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(button[class*="from-"]):not(span[class*="bg-"]):not(.keep-white):not([class*="bg-amber-500"]):not([class*="bg-rose-500"]):not([class*="bg-emerald-500"]):not([class*="bg-cyan-500"]),
+html.light .text-white:not(.preserve-dark *):not(button[class*="bg-gradient"]):not(button[class*="from-"]):not(span[class*="bg-"]):not(.keep-white):not([class*="bg-amber-500"]):not([class*="bg-rose-500"]):not([class*="bg-emerald-500"]):not([class*="bg-cyan-500"]) {
+  color: #0f172a;
+}
+
+/* Ensure buttons with active solid gradients or .keep-white preserve white text */
+.keep-white,
+button.bg-gradient-to-r,
+a.bg-gradient-to-r,
+.btn-primary {
+  color: #ffffff !important;
+}
+
+/* Light mode modals backdrop */
+html:not(.dark) .bg-black\/80,
+html.light .bg-black\/80 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+}
+
+/* Local & Web Font Definitions for Siemreab / Siemreap */
+@font-face {
+  font-family: 'Siemreab';
+  src: local('Siemreab'), local('Siemreap'), url('/fonts/Siemreap.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Siemreap';
+  src: local('Siemreap'), local('Siemreab'), url('/fonts/Siemreap.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Dedicated Brand class for English brand name logo */
+.font-brand {
+  font-family: 'Unbounded', sans-serif !important;
+}
+
+/* Universal Khmer Typography Mode */
+html.lang-km,
+html[lang="km"] {
+  font-family: 'Siemreab', 'Siemreap', sans-serif;
+}
+
+html.lang-km body,
+html[lang="km"] body {
+  font-family: 'Siemreab', 'Siemreap', sans-serif;
+}
+
+/* Fix Khmer ligatures & subscript clustering: prevent letter-spacing distortions */
+html.lang-km *,
+html[lang="km"] * {
+  letter-spacing: normal !important;
+}
+
+/* Ensure all text, buttons, headings, and Tailwind font utilities adopt Siemreab in Khmer mode */
+html.lang-km .font-sans,
+html[lang="km"] .font-sans,
+html.lang-km .font-display:not(.font-brand),
+html[lang="km"] .font-display:not(.font-brand),
+html.lang-km .font-tech,
+html[lang="km"] .font-tech,
+html.lang-km h1,
+html.lang-km h2,
+html.lang-km h3,
+html.lang-km h4,
+html.lang-km h5,
+html.lang-km h6,
+html.lang-km p,
+html.lang-km span:not(.font-brand),
+html.lang-km button,
+html.lang-km input,
+html.lang-km select,
+html.lang-km textarea,
+html.lang-km a {
+  font-family: 'Siemreab', 'Siemreap', sans-serif !important;
+}
+
+/* Give Khmer headings and text comfortable breathing room for upper vowels & subscript consonants */
+html.lang-km h1,
+html.lang-km h2,
+html.lang-km h3,
+html.lang-km h4,
+html.lang-km h5,
+html.lang-km h6 {
+  line-height: 1.45 !important;
+}
+
+html.lang-km p,
+html.lang-km span,
+html.lang-km button {
+  line-height: 1.5;
+}
