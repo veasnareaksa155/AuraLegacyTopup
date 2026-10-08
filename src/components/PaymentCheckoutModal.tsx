@@ -4,7 +4,6 @@ import {
   Copy, 
   Check, 
   Clock, 
-  QrCode, 
   Zap
 } from 'lucide-react';
 import type { Game, GameDenomination, PaymentMethod, Currency } from '../types';
@@ -210,28 +209,21 @@ export const PaymentCheckoutModal: React.FC<CheckoutModalProps> = ({
               {formatPrice(orderData.total, currency)}
             </div>
 
-            {/* Official KHQR Code Container */}
-            <div className="bg-white p-3 rounded-2xl inline-block border-2 border-slate-900 shadow-sm mx-auto mb-3">
-              <div className="w-48 h-48 bg-white flex flex-col items-center justify-center relative p-1.5">
-                {/* 3 Corner Finder Patterns */}
-                <div className="absolute top-1 left-1 w-8 h-8 border-4 border-slate-900 rounded-sm flex items-center justify-center">
-                  <div className="w-3.5 h-3.5 bg-slate-900 rounded-xs" />
-                </div>
-                <div className="absolute top-1 right-1 w-8 h-8 border-4 border-slate-900 rounded-sm flex items-center justify-center">
-                  <div className="w-3.5 h-3.5 bg-slate-900 rounded-xs" />
-                </div>
-                <div className="absolute bottom-1 left-1 w-8 h-8 border-4 border-slate-900 rounded-sm flex items-center justify-center">
-                  <div className="w-3.5 h-3.5 bg-slate-900 rounded-xs" />
-                </div>
-
-                {/* Center QR Code with Red KHQR Badge */}
-                <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-                  <QrCode className="w-28 h-28 text-slate-900 opacity-90" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-9 h-9 rounded-lg bg-[#E11927] border-2 border-white shadow-md flex flex-col items-center justify-center text-white select-none">
-                      <span className="text-[8px] font-black tracking-tighter leading-none">KHQR</span>
-                      <span className="text-[6px] font-bold opacity-80 leading-none mt-0.5">NBC</span>
-                    </div>
+            {/* Official KHQR Code Container with REAL Scannable Matrix */}
+            <div className="bg-white p-2.5 rounded-2xl inline-block border-2 border-slate-900 shadow-sm mx-auto mb-3">
+              <div className="w-52 h-52 bg-white relative flex items-center justify-center p-1">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=2&data=${encodeURIComponent(
+                    `https://checkout.bakong.nbc.gov.kh/pay?merchant=AURA_LEGACY_TOPUP&order=${orderId}&amount=${orderData.total}&cur=${currency}&item=${encodeURIComponent(orderData.denomination.name)}`
+                  )}`}
+                  alt="Bakong KHQR Payment Code"
+                  className="w-full h-full object-contain rounded-lg"
+                />
+                {/* Center Official KHQR NBC Emblem */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-10 h-10 rounded-xl bg-[#E11927] border-[2.5px] border-white shadow-md flex flex-col items-center justify-center text-white select-none">
+                    <span className="text-[9px] font-black tracking-tighter leading-none">KHQR</span>
+                    <span className="text-[6px] font-extrabold opacity-90 leading-none mt-0.5">NBC</span>
                   </div>
                 </div>
               </div>
