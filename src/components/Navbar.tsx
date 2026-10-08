@@ -79,11 +79,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       <header 
-        className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#070913]/95 backdrop-blur-md transition-colors"
-        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+        className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#070913]/95 backdrop-blur-md transition-colors safe-top-nav"
+        style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 6px)' }}
       >
       {/* Main Glass Solid Navbar */}
-      <nav className="glass-solid border-b border-slate-200/90 dark:border-white/10 px-3.5 sm:px-4 lg:px-8 py-2 sm:py-2.5">
+      <nav className="glass-solid border-b border-slate-200/90 dark:border-white/10 px-3.5 sm:px-4 lg:px-8 py-2.5 sm:py-2.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Brand Logo with User's Uploaded Logo (No background color, large & clean) */}
@@ -98,12 +98,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               <img
                 src={brandLogo}
                 alt="AuraLegacy Logo"
-                className="w-11 h-11 sm:w-14 sm:h-14 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_4px_12px_rgba(239,68,68,0.35)]"
+                className="w-10 h-10 sm:w-14 sm:h-14 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_4px_12px_rgba(239,68,68,0.35)]"
               />
             </div>
 
             <div className="flex flex-col">
-              <span className="font-display font-brand font-black text-base sm:text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1 leading-tight">
+              <span className="font-display font-brand font-black text-sm sm:text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1 leading-tight">
                 AURA<span className="aura-text-gradient">LEGACY</span>
               </span>
               <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase font-tech font-brand leading-none mt-0.5">
@@ -359,8 +359,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Slide-in Right Drawer Panel */}
         <div className="fixed inset-y-0 right-0 w-full max-w-[320px] sm:max-w-sm bg-white dark:bg-[#080d1a] border-l border-slate-200/90 dark:border-white/10 shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-300 ease-out z-[101]">
-            {/* Drawer Top Header */}
-            <div className="p-4 sm:p-5 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+            {/* Drawer Top Header (Sticky with iOS Safe Area Padding) */}
+            <div 
+              className="px-4 sm:px-5 pb-3.5 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between sticky top-0 bg-white/95 dark:bg-[#080d1a]/95 backdrop-blur-md z-20 safe-top-drawer"
+              style={{ paddingTop: 'calc(max(env(safe-area-inset-top, 0px), 16px) + 8px)' }}
+            >
               <div className="flex items-center gap-2.5">
                 <img 
                   src={brandLogo} 
@@ -377,13 +380,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
               </div>
 
-              {/* Close Button */}
+              {/* Close Button - Enhanced 36px touch target */}
               <button
                 onClick={() => {
                   sound.playClick();
                   setMobileMenuOpen(false);
                 }}
-                className="glass-solid-btn w-8 h-8 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                className="glass-solid-btn w-9 h-9 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer active:scale-90 shadow-xs"
                 aria-label="Close menu"
               >
                 <X className="w-4 h-4" />

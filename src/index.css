@@ -50,6 +50,19 @@
 }
 
 @layer utilities {
+  /* iOS Safe Area & Notched Screen Adaptations */
+  .safe-top-nav {
+    padding-top: max(env(safe-area-inset-top, 0px), 8px);
+  }
+
+  .safe-top-drawer {
+    padding-top: max(env(safe-area-inset-top, 0px), 16px);
+  }
+
+  .safe-bottom-dock {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+  }
+
   /* Ultra-sleek glassmorphism optimized for 60-120fps GPU performance */
   .glass-card {
     background: rgba(11, 16, 32, 0.85);
