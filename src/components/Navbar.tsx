@@ -86,33 +86,27 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav className="glass-solid border-b border-slate-200/90 dark:border-white/10 px-3.5 sm:px-4 lg:px-8 py-2 sm:py-2.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
           
-          {/* Brand Logo with User's Uploaded Logo */}
+          {/* Brand Logo with User's Uploaded Logo (No background color, large & clean) */}
           <div 
             onClick={() => {
               sound.playClick();
               setCurrentTab('home');
             }}
-            className="flex items-center gap-2 sm:gap-3 cursor-pointer group flex-shrink-0"
+            className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer group flex-shrink-0"
           >
-            <div className="relative">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-red-500 via-rose-600 to-amber-500 p-[1.5px] shadow-sm dark:shadow-[0_0_22px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform duration-300 flex items-center justify-center overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-b from-[#180a14] to-[#0a0408] rounded-[10px] sm:rounded-[14px] flex items-center justify-center p-0.5 sm:p-1 relative">
-                  <div className="absolute inset-0 bg-red-600/20 blur-sm rounded-full pointer-events-none" />
-                  <img
-                    src={brandLogo}
-                    alt="AuraLegacy Logo"
-                    className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,20,60,0.7)] group-hover:scale-110 transition-transform duration-300 relative z-10"
-                  />
-                </div>
-              </div>
-              <div className="hidden dark:block absolute -inset-1 bg-red-500/25 rounded-2xl blur-md -z-10 group-hover:bg-red-500/40 transition-colors" />
+            <div className="relative flex items-center justify-center">
+              <img
+                src={brandLogo}
+                alt="AuraLegacy Logo"
+                className="w-11 h-11 sm:w-14 sm:h-14 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_4px_12px_rgba(239,68,68,0.35)]"
+              />
             </div>
 
             <div className="flex flex-col">
-              <span className="font-display font-brand font-black text-base sm:text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1 leading-tight">
+              <span className="font-display font-brand font-black text-base sm:text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1 leading-tight">
                 AURA<span className="aura-text-gradient">LEGACY</span>
               </span>
-              <span className="text-[8px] sm:text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase font-tech font-brand leading-none">
+              <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase font-tech font-brand leading-none mt-0.5">
                 TOP UP SERVICE
               </span>
             </div>
@@ -368,11 +362,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Drawer Top Header */}
             <div className="p-4 sm:p-5 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 via-rose-600 to-amber-500 p-[1.5px] shadow-sm flex items-center justify-center overflow-hidden">
-                  <div className="w-full h-full bg-[#180a14] rounded-[10px] flex items-center justify-center p-0.5">
-                    <img src={brandLogo} alt="Aura Logo" className="w-full h-full object-contain" />
-                  </div>
-                </div>
+                <img 
+                  src={brandLogo} 
+                  alt="Aura Logo" 
+                  className="w-10 h-10 object-contain drop-shadow-[0_2px_8px_rgba(239,68,68,0.35)]" 
+                />
                 <div className="flex flex-col">
                   <span className="font-display font-brand font-extrabold text-sm tracking-wider text-slate-900 dark:text-white">
                     AURA<span className="aura-text-gradient">LEGACY</span>

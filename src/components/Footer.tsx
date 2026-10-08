@@ -21,13 +21,12 @@ export const Footer: React.FC = () => {
           
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500 via-rose-600 to-amber-500 p-[1.5px] shadow-[0_0_22px_rgba(239,68,68,0.35)] flex items-center justify-center overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-b from-[#180a14] to-[#0a0408] rounded-[14px] flex items-center justify-center p-1 relative">
-                  <div className="absolute inset-0 bg-red-600/25 blur-sm rounded-full pointer-events-none" />
-                  <img src={brandLogo} alt="AuraLegacy Logo" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,20,60,0.7)] relative z-10" />
-                </div>
-              </div>
+            <div className="flex items-center gap-3.5">
+              <img 
+                src={brandLogo} 
+                alt="AuraLegacy Logo" 
+                className="w-13 h-13 sm:w-14 sm:h-14 object-contain drop-shadow-[0_4px_12px_rgba(239,68,68,0.35)]" 
+              />
               <span className="font-display font-brand font-extrabold text-xl tracking-wider text-slate-900 dark:text-white">
                 AURA<span className="aura-text-gradient">LEGACY</span>
               </span>
