@@ -73,8 +73,8 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({
 
   return (
     <>
-      {/* Floating Chat Trigger Button (FAB) - Generous clearance above mobile bottom navbar */}
-      <div className="fixed bottom-[108px] sm:bottom-8 right-4 sm:right-6 z-40">
+      {/* Floating Chat Trigger Button (FAB) - Perfectly aligned above tightened mobile bottom dock */}
+      <div className="fixed bottom-[78px] sm:bottom-8 right-4 sm:right-6 z-40">
         <button
           onClick={toggleOpen}
           aria-label="Customer Support Chat"

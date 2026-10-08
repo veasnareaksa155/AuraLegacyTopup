@@ -207,7 +207,7 @@ export function App() {
       <LiveTicker t={t} />
 
       {/* Main Content Area */}
-      <main className={`flex-1 relative z-10 ${!selectedGame ? 'pb-24 md:pb-0' : ''}`}>
+      <main className={`flex-1 relative z-10 ${!selectedGame ? 'pb-18 md:pb-0' : ''}`}>
         {selectedGame ? (
           /* Dedicated Top-up Terminal View for Selected Game */
           <TopUpTerminal

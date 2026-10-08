@@ -96,14 +96,14 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   return (
     <nav
       aria-label="Mobile Navigation Dock"
-      className="fixed bottom-3 inset-x-3.5 sm:inset-x-6 max-w-md mx-auto z-40 md:hidden pointer-events-auto select-none"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      className="fixed inset-x-3 sm:inset-x-6 max-w-md mx-auto z-40 md:hidden pointer-events-auto select-none"
+      style={{ bottom: 'max(calc(env(safe-area-inset-bottom, 0px) * 0.25), 8px)' }}
     >
       {/* Outer Dock Bar with Glass Solid Glow */}
-      <div className="relative rounded-[28px] border border-slate-200/90 dark:border-cyan-500/30 bg-white/95 dark:bg-[#070b16]/95 backdrop-blur-2xl shadow-[0_12px_36px_-6px_rgba(15,23,42,0.18)] dark:shadow-[0_16px_40px_-6px_rgba(0,0,0,0.85),0_0_30px_rgba(0,242,254,0.14)] px-2 pt-2 pb-1.5 flex items-center justify-around">
+      <div className="relative rounded-[24px] border border-slate-200/90 dark:border-cyan-500/30 bg-white/95 dark:bg-[#070b16]/95 backdrop-blur-2xl shadow-[0_8px_28px_-4px_rgba(15,23,42,0.18)] dark:shadow-[0_12px_36px_-6px_rgba(0,0,0,0.85),0_0_24px_rgba(0,242,254,0.14)] px-2 pt-1.5 pb-1 flex items-center justify-around">
         
         {/* Subtle Ambient Glow Mesh inside dock */}
-        <div className="absolute inset-0 rounded-[28px] bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-purple-500/5 pointer-events-none" />
+        <div className="absolute inset-0 rounded-[24px] bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-purple-500/5 pointer-events-none" />
 
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -115,7 +115,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               key={item.id}
               onClick={item.action}
               whileTap={{ scale: 0.9 }}
-              className="relative flex flex-col items-center justify-end flex-1 h-14 py-1 cursor-pointer focus:outline-none"
+              className="relative flex flex-col items-center justify-end flex-1 h-12 py-0.5 cursor-pointer focus:outline-none"
             >
               {/* Active State: Floating Elevated Bubble with Pure Glass Solid Glow */}
               {active ? (
@@ -127,10 +127,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     damping: 26,
                     mass: 0.75,
                   }}
-                  className={`absolute -top-4.5 w-12 h-12 rounded-full flex items-center justify-center z-20 border-2 border-white/70 dark:border-cyan-300/80 ${
+                  className={`absolute -top-3.5 w-11 h-11 rounded-full flex items-center justify-center z-20 border-2 border-white/70 dark:border-cyan-300/80 ${
                     isFlash
-                      ? 'bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-600 text-white shadow-[0_8px_24px_rgba(245,158,11,0.65),0_0_20px_rgba(245,158,11,0.45)]'
-                      : 'bg-gradient-to-tr from-cyan-400 via-blue-600 to-indigo-600 text-white shadow-[0_8px_24px_rgba(6,182,212,0.65),0_0_20px_rgba(6,182,212,0.45)]'
+                      ? 'bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-600 text-white shadow-[0_6px_20px_rgba(245,158,11,0.65),0_0_16px_rgba(245,158,11,0.45)]'
+                      : 'bg-gradient-to-tr from-cyan-400 via-blue-600 to-indigo-600 text-white shadow-[0_6px_20px_rgba(6,182,212,0.65),0_0_16px_rgba(6,182,212,0.45)]'
                   }`}
                 >
                   {/* Inner Glass Specular Glare */}
@@ -141,7 +141,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 25 }}
                   >
-                    <Icon className="w-5 h-5 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+                    <Icon className="w-4.5 h-4.5 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
                   </motion.div>
                 </motion.div>
               ) : (
