@@ -77,7 +77,7 @@ export const AdminSystemTab: React.FC = () => {
       {/* Grid: 2 columns */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Card 1: MooGold API & Proxy Engine */}
-        <div className="glass-card rounded-2xl p-6 border border-white/10 space-y-4">
+        <div className="admin-card rounded-2xl p-6 border border-white/10 bg-[#0d1326] space-y-4 shadow-xl">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <h3 className="font-display font-bold text-base text-white flex items-center gap-2">
               <Server className="w-4 h-4 text-cyan-400" />
@@ -115,7 +115,7 @@ export const AdminSystemTab: React.FC = () => {
             </div>
 
             {/* Wallet Balance */}
-            <div className="p-4 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between mt-3">
+            <div className="p-4 rounded-xl bg-[#121933] border border-white/10 flex items-center justify-between mt-3">
               <div>
                 <span className="text-[11px] text-slate-400 block">សមតុល្យក្នុងកាបូប MooGold (Wallet)</span>
                 <span className="font-display font-black text-2xl text-white">
@@ -135,7 +135,7 @@ export const AdminSystemTab: React.FC = () => {
         </div>
 
         {/* Card 2: Admin Password Settings */}
-        <div className="glass-card rounded-2xl p-6 border border-white/10 space-y-4">
+        <div className="admin-card rounded-2xl p-6 border border-white/10 bg-[#0d1326] space-y-4 shadow-xl">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <h3 className="font-display font-bold text-base text-white flex items-center gap-2">
               <Lock className="w-4 h-4 text-cyan-400" />
@@ -158,7 +158,7 @@ export const AdminSystemTab: React.FC = () => {
 
           <form onSubmit={handlePasswordChange} className="space-y-3.5">
             <div>
-              <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1">
+              <label className="block text-[11px] font-tech text-cyan-400 uppercase tracking-wider mb-1">
                 ពាក្យសម្ងាត់ថ្មី (New Password)
               </label>
               <input
@@ -167,12 +167,12 @@ export const AdminSystemTab: React.FC = () => {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-black/40 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+                className="w-full bg-[#080c1d] border border-white/15 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400 font-mono shadow-inner"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1">
+              <label className="block text-[11px] font-tech text-cyan-400 uppercase tracking-wider mb-1">
                 បញ្ជាក់ពាក្យសម្ងាត់ថ្មី (Confirm Password)
               </label>
               <input
@@ -181,7 +181,7 @@ export const AdminSystemTab: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-black/40 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+                className="w-full bg-[#080c1d] border border-white/15 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400 font-mono shadow-inner"
               />
             </div>
 

@@ -71,3 +71,4 @@ export function checkAdminSession(): AdminUser | null {
 export function logoutAdmin(): void {
   localStorage.removeItem(ADMIN_STORAGE_KEY);
 }
+

@@ -57,7 +57,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
             sound.playClick();
             onBackToStore();
           }}
-          className="glass-solid-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-2 border border-white/10 hover:border-cyan-500/40 transition-all shadow-lg"
+          className="bg-[#121933] hover:bg-[#1a2347] px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-2 border border-white/15 hover:border-cyan-500/40 transition-all shadow-lg cursor-pointer"
         >
           <Store className="w-4 h-4 text-cyan-400" />
           <span>ត្រឡប់ទៅកាន់ហាង (Storefront)</span>
@@ -66,7 +66,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
 
       <div className="relative z-10 w-full max-w-md">
         {/* Card */}
-        <div className="glass-card rounded-3xl p-7 sm:p-9 border border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.15)] backdrop-blur-2xl">
+        <div className="admin-card bg-[#0d1326] rounded-3xl p-7 sm:p-9 border border-cyan-500/40 shadow-[0_0_50px_rgba(6,182,212,0.2)] backdrop-blur-2xl text-white">
           {/* Logo & Branding */}
           <div className="text-center mb-8">
             <div className="relative inline-block mb-3">
@@ -99,7 +99,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5 font-tech uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-cyan-400 mb-1.5 font-tech uppercase tracking-wider">
                 Admin Username
               </label>
               <div className="relative">
@@ -110,13 +110,13 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="admin"
-                  className="w-full bg-black/40 border border-white/10 pl-10 pr-4 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all font-mono"
+                  className="w-full bg-[#080c1d] border border-white/15 pl-10 pr-4 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-mono shadow-inner"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5 font-tech uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-cyan-400 mb-1.5 font-tech uppercase tracking-wider">
                 Passcode / Password
               </label>
               <div className="relative">
@@ -127,12 +127,12 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-black/40 border border-white/10 pl-10 pr-11 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all font-mono"
+                  className="w-full bg-[#080c1d] border border-white/15 pl-10 pr-11 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-mono shadow-inner"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -177,3 +177,4 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
     </div>
   );
 };
+

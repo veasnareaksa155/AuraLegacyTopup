@@ -169,7 +169,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
       )}
 
       {/* Game Selector Bar */}
-      <div className="glass-card rounded-2xl p-3 border border-white/10 flex items-center gap-2 overflow-x-auto scrollbar-none">
+      <div className="admin-card rounded-2xl p-3 border border-white/10 bg-[#0d1326] flex items-center gap-2 overflow-x-auto scrollbar-none shadow-xl">
         {games.map((g) => {
           const isSelected = g.id === selectedGameId;
           return (
@@ -181,8 +181,8 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
               }}
               className={`flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 isSelected
-                  ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)]'
-                  : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 border border-white/5'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.45)] border border-cyan-400/50'
+                  : 'bg-[#121933] text-slate-300 hover:text-white hover:bg-[#1a2347] border border-white/10'
               }`}
             >
               <img src={g.thumbnail} alt="" className="w-5 h-5 rounded-md object-cover" />
@@ -197,7 +197,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
         {/* Left Column: Game Media & Details */}
         <div className="space-y-6">
           {/* Card: Images & Media */}
-          <div className="glass-card rounded-2xl p-5 border border-white/10 space-y-4">
+          <div className="admin-card rounded-2xl p-5 border border-white/10 bg-[#0d1326] space-y-4 shadow-xl text-white">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <h3 className="font-display font-bold text-sm text-white flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-cyan-400" />
@@ -207,7 +207,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
 
             {/* Banner Preview & Input */}
             <div>
-              <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-tech text-cyan-400 font-bold uppercase tracking-wider mb-1.5">
                 Banner Header URL (16:9)
               </label>
               <div className="relative mb-2 rounded-xl overflow-hidden border border-white/10 aspect-video bg-black/60">
@@ -228,13 +228,13 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                 value={currentGame.banner}
                 onChange={(e) => setCurrentGame({ ...currentGame, banner: e.target.value })}
                 placeholder="https://..."
-                className="w-full bg-black/40 border border-white/10 px-3 py-2 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+                className="w-full bg-[#080c1d] border border-white/15 px-3 py-2.5 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono"
               />
             </div>
 
             {/* Thumbnail Preview & Input */}
             <div>
-              <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-tech text-cyan-400 font-bold uppercase tracking-wider mb-1.5">
                 Thumbnail Icon URL (Square 1:1)
               </label>
               <div className="flex items-center gap-3 mb-2">
@@ -254,35 +254,35 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                     value={currentGame.thumbnail}
                     onChange={(e) => setCurrentGame({ ...currentGame, thumbnail: e.target.value })}
                     placeholder="https://..."
-                    className="w-full bg-black/40 border border-white/10 px-3 py-2 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+                    className="w-full bg-[#080c1d] border border-white/15 px-3 py-2.5 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono"
                   />
-                  <p className="text-[10px] text-slate-500 mt-1">រូប Icon បង្ហាញលើទំព័រដើម & Catalog</p>
+                  <p className="text-[10px] text-slate-400 mt-1">រូប Icon បង្ហាញលើទំព័រដើម & Catalog</p>
                 </div>
               </div>
             </div>
 
             {/* Game Meta */}
             <div>
-              <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-tech text-cyan-400 font-bold uppercase tracking-wider mb-1.5">
                 ឈ្មោះហ្គេម (Game Title)
               </label>
               <input
                 type="text"
                 value={currentGame.title}
                 onChange={(e) => setCurrentGame({ ...currentGame, title: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 px-3 py-2 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500 font-medium"
+                className="w-full bg-[#080c1d] border border-white/15 px-3 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400 font-medium"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-tech text-cyan-400 font-bold uppercase tracking-wider mb-1.5">
                 ក្រុមហ៊ុនផលិត (Publisher)
               </label>
               <input
                 type="text"
                 value={currentGame.publisher}
                 onChange={(e) => setCurrentGame({ ...currentGame, publisher: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 px-3 py-2 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500 font-medium"
+                className="w-full bg-[#080c1d] border border-white/15 px-3 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400 font-medium"
               />
             </div>
           </div>
@@ -290,7 +290,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
 
         {/* Right Column: Denominations & Prices Table */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="glass-card rounded-2xl p-5 border border-white/10 space-y-4">
+          <div className="admin-card rounded-2xl p-5 border border-white/10 bg-[#0d1326] space-y-4 shadow-xl text-white">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
               <div>
                 <h3 className="font-display font-bold text-base text-white flex items-center gap-2">
@@ -305,7 +305,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsAddModalOpen(true)}
-                  className="px-3 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.35)] border border-cyan-400/40"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>បន្ថែមកញ្ចប់ថ្មី</span>
@@ -323,11 +323,11 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                 return (
                   <div
                     key={denom.id}
-                    className="p-3.5 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-500/30 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3"
+                    className="p-3.5 rounded-xl bg-[#121933] border border-white/10 hover:border-cyan-500/40 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md"
                   >
                     {/* Item info */}
                     <div className="flex items-center gap-3 flex-1 min-w-[200px]">
-                      <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 font-mono text-xs font-bold">
+                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 font-mono text-xs font-bold">
                         {index + 1}
                       </div>
                       <div className="flex-1">
@@ -336,10 +336,10 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                             type="text"
                             value={denom.name}
                             onChange={(e) => handleDenomFieldChange(denom.id, 'name', e.target.value)}
-                            className="bg-transparent border-b border-transparent hover:border-white/20 focus:border-cyan-500 font-bold text-sm text-white focus:outline-none transition-all py-0.5"
+                            className="bg-transparent border-b border-transparent hover:border-white/20 focus:border-cyan-400 font-bold text-sm text-white focus:outline-none transition-all py-0.5"
                           />
                           {denom.popular && (
-                            <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">
+                            <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/40">
                               ⭐ Popular
                             </span>
                           )}
@@ -350,14 +350,14 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                             value={denom.amount}
                             onChange={(e) => handleDenomFieldChange(denom.id, 'amount', e.target.value)}
                             placeholder="Pack text"
-                            className="text-[11px] text-cyan-400 font-mono bg-white/5 px-2 py-0.5 rounded border border-white/5 focus:outline-none focus:border-cyan-500 max-w-[100px]"
+                            className="text-[11px] text-cyan-300 font-mono bg-[#080c1d] px-2.5 py-1 rounded-lg border border-white/15 focus:outline-none focus:border-cyan-400 max-w-[100px]"
                           />
                           <input
                             type="text"
                             value={denom.bonus || ''}
                             onChange={(e) => handleDenomFieldChange(denom.id, 'bonus', e.target.value)}
                             placeholder="+ Bonus Tag (optional)"
-                            className="text-[11px] text-slate-400 bg-white/5 px-2 py-0.5 rounded border border-white/5 focus:outline-none focus:border-cyan-500 flex-1"
+                            className="text-[11px] text-slate-300 bg-[#080c1d] px-2.5 py-1 rounded-lg border border-white/15 focus:outline-none focus:border-cyan-400 flex-1"
                           />
                         </div>
                       </div>
@@ -367,7 +367,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                     <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
                       {/* Retail Price USD */}
                       <div className="flex-1 sm:flex-initial">
-                        <label className="block text-[10px] font-tech text-slate-400 uppercase">
+                        <label className="block text-[10px] font-tech text-emerald-400 uppercase font-bold">
                           តម្លៃលក់ (USD)
                         </label>
                         <div className="relative mt-0.5">
@@ -377,17 +377,17 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                             step="0.01"
                             value={priceUsd}
                             onChange={(e) => handlePriceChangeUsd(denom.id, e.target.value)}
-                            className="w-24 bg-black/60 border border-emerald-500/40 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono font-bold text-emerald-400 focus:outline-none focus:border-emerald-400"
+                            className="w-24 bg-[#080c1d] border border-emerald-500/60 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono font-bold text-emerald-400 focus:outline-none focus:border-emerald-400"
                           />
                         </div>
-                        <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
+                        <span className="text-[10px] text-emerald-300/80 font-mono block mt-0.5">
                           ~{priceKhr} ៛
                         </span>
                       </div>
 
                       {/* Original Price USD */}
                       <div className="flex-1 sm:flex-initial">
-                        <label className="block text-[10px] font-tech text-slate-400 uppercase">
+                        <label className="block text-[10px] font-tech text-slate-400 uppercase font-bold">
                           តម្លៃដើម (Original)
                         </label>
                         <div className="relative mt-0.5">
@@ -398,7 +398,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                             value={origUsd}
                             onChange={(e) => handleOrigPriceChangeUsd(denom.id, e.target.value)}
                             placeholder="0.00"
-                            className="w-20 bg-black/60 border border-white/10 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500"
+                            className="w-20 bg-[#080c1d] border border-white/15 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-400"
                           />
                         </div>
                         <span className="text-[10px] text-slate-500 font-mono block mt-0.5">
@@ -423,7 +423,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                         <button
                           type="button"
                           onClick={() => handleDeleteDenom(denom.id)}
-                          className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 hover:text-rose-300 transition-all cursor-pointer"
+                          className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 hover:text-rose-300 transition-all cursor-pointer"
                           title="លុបកញ្ចប់នេះ"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -440,7 +440,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
               <button
                 type="button"
                 onClick={handleResetDefaults}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#121933] hover:bg-[#1a2347] border border-white/10 text-slate-300 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4 text-slate-400" />
                 <span>កំណត់ឡើងវិញទៅតម្លៃដើម (Reset Defaults)</span>
@@ -461,8 +461,8 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
 
       {/* Add New Denomination Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="glass-card rounded-3xl border border-cyan-500/40 p-6 sm:p-7 max-w-md w-full relative animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+          <div className="admin-card rounded-3xl border border-cyan-500/40 bg-[#0d1326] p-6 sm:p-7 max-w-md w-full relative animate-in fade-in zoom-in-95 shadow-2xl text-white">
             <h3 className="font-display font-black text-lg text-white mb-4 flex items-center gap-2">
               <Plus className="w-5 h-5 text-cyan-400" />
               <span>បន្ថែមកញ្ចប់ពេជ្រថ្មី (New Denomination)</span>
@@ -470,7 +470,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
 
             <form onSubmit={handleAddDenomSubmit} className="space-y-3.5">
               <div>
-                <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-tech text-cyan-400 font-bold uppercase tracking-wider mb-1">
                   ឈ្មោះកញ្ចប់ (Package Name)
                 </label>
                 <input
@@ -479,12 +479,12 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                   value={newDenomName}
                   onChange={(e) => setNewDenomName(e.target.value)}
                   placeholder="ឧទាហរណ៍៖ 500 Diamonds"
-                  className="w-full bg-black/40 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-[#080c1d] border border-white/15 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-tech text-cyan-400 font-bold uppercase tracking-wider mb-1">
                   បរិមាណបង្ហាញ (Amount Tag)
                 </label>
                 <input
@@ -493,13 +493,13 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                   value={newDenomAmount}
                   onChange={(e) => setNewDenomAmount(e.target.value)}
                   placeholder="ឧទាហរណ៍៖ 500 💎"
-                  className="w-full bg-black/40 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+                  className="w-full bg-[#080c1d] border border-white/15 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400 font-mono"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1">
+                  <label className="block text-[11px] font-tech text-emerald-400 font-bold uppercase tracking-wider mb-1">
                     តម្លៃលក់ ($ USD)
                   </label>
                   <input
@@ -509,12 +509,12 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                     value={newDenomPriceUsd}
                     onChange={(e) => setNewDenomPriceUsd(e.target.value)}
                     placeholder="1.50"
-                    className="w-full bg-black/40 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs text-emerald-400 font-mono font-bold focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-[#080c1d] border border-emerald-500/60 px-3.5 py-2.5 rounded-xl text-xs text-emerald-400 font-mono font-bold focus:outline-none focus:border-emerald-400"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1">
+                  <label className="block text-[11px] font-tech text-slate-400 font-bold uppercase tracking-wider mb-1">
                     តម្លៃដើម ($ USD)
                   </label>
                   <input
@@ -523,13 +523,13 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                     value={newDenomOrigUsd}
                     onChange={(e) => setNewDenomOrigUsd(e.target.value)}
                     placeholder="2.00"
-                    className="w-full bg-black/40 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs text-slate-300 font-mono focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-[#080c1d] border border-white/15 px-3.5 py-2.5 rounded-xl text-xs text-slate-300 font-mono focus:outline-none focus:border-cyan-400"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-tech text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-tech text-cyan-400 font-bold uppercase tracking-wider mb-1">
                   ប្រាក់រង្វាន់បន្ថែម Bonus Tag (បើមាន)
                 </label>
                 <input
@@ -537,7 +537,7 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                   value={newDenomBonus}
                   onChange={(e) => setNewDenomBonus(e.target.value)}
                   placeholder="ឧទាហរណ៍៖ +50 Bonus"
-                  className="w-full bg-black/40 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-[#080c1d] border border-white/15 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400"
                 />
               </div>
 

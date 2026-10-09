@@ -102,7 +102,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               sound.playClick();
               onNavigateToStore();
             }}
-            className="px-3 sm:px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs"
+            className="px-3 sm:px-4 py-2 rounded-xl bg-[#121933] hover:bg-[#1a2347] border border-cyan-500/30 text-white hover:text-cyan-300 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
             title="ត្រឡប់ទៅមើលហាងផ្ទាល់"
           >
             <Store className="w-4 h-4 text-cyan-400" />
@@ -112,10 +112,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {/* Logout */}
           <button
             onClick={handleLogoutClick}
-            className="p-2 sm:px-3 sm:py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 hover:text-rose-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+            className="p-2 sm:px-3 sm:py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 hover:text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
             title="ចាកចេញ (Logout)"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 text-rose-400" />
             <span className="hidden sm:inline">ចាកចេញ</span>
           </button>
         </div>
@@ -124,7 +124,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 relative z-10 space-y-6">
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 border-b border-white/10 pb-3 overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-2.5 border-b border-white/10 pb-3 overflow-x-auto scrollbar-none">
           <button
             onClick={() => {
               sound.playClick();
@@ -132,15 +132,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'orders'
-                ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)]'
-                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.45)] border border-cyan-400/50'
+                : 'bg-[#121933] text-slate-300 hover:text-white hover:bg-[#1a2347] border border-white/10'
             }`}
           >
             <ShoppingBag className="w-4 h-4" />
             <span>គ្រប់គ្រងការបញ្ជាទិញ (Orders)</span>
             <span
               className={`px-1.5 py-0.2 rounded-md text-[10px] font-mono font-black ${
-                activeTab === 'orders' ? 'bg-black text-cyan-400' : 'bg-white/10 text-slate-300'
+                activeTab === 'orders' ? 'bg-black/60 text-cyan-300 border border-cyan-400/30' : 'bg-black/40 text-slate-300 border border-white/10'
               }`}
             >
               {orders.length}
@@ -154,8 +154,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'catalog'
-                ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)]'
-                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.45)] border border-cyan-400/50'
+                : 'bg-[#121933] text-slate-300 hover:text-white hover:bg-[#1a2347] border border-white/10'
             }`}
           >
             <Layers className="w-4 h-4" />
@@ -169,8 +169,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'system'
-                ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)]'
-                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.45)] border border-cyan-400/50'
+                : 'bg-[#121933] text-slate-300 hover:text-white hover:bg-[#1a2347] border border-white/10'
             }`}
           >
             <Settings className="w-4 h-4" />

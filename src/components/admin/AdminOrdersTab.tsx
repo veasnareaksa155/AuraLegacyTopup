@@ -143,7 +143,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Total Revenue */}
-        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-white/10 relative overflow-hidden group">
+        <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden group shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-400 font-tech uppercase tracking-wider">ចំណូលសរុប (Revenue)</span>
             <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
@@ -159,7 +159,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
         </div>
 
         {/* Card 2: Total Orders */}
-        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-white/10 relative overflow-hidden">
+        <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-400 font-tech uppercase tracking-wider">ការបញ្ជាទិញសរុប</span>
             <div className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
@@ -175,7 +175,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
         </div>
 
         {/* Card 3: Completed Orders */}
-        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-white/10 relative overflow-hidden">
+        <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-400 font-tech uppercase tracking-wider">ជោគជ័យ (Delivered)</span>
             <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
@@ -191,7 +191,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
         </div>
 
         {/* Card 4: Queued Orders */}
-        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-white/10 relative overflow-hidden">
+        <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-400 font-tech uppercase tracking-wider">កំពុងរង់ចាំ (Queued)</span>
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
@@ -208,7 +208,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
       </div>
 
       {/* Search & Status Filters */}
-      <div className="glass-card rounded-2xl p-4 border border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div className="admin-card rounded-2xl p-4 border border-white/10 bg-[#0d1326] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-xl">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -217,7 +217,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="ស្វែងរកតាម Order ID, User ID, ឈ្មោះហ្គេម ឬលេខទូរស័ព្ទ..."
-            className="w-full bg-black/40 border border-white/10 pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all font-mono"
+            className="w-full bg-[#080c1d] border border-white/15 pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-all font-mono"
           />
         </div>
 
@@ -232,8 +232,8 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
               }}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 statusFilter === st
-                  ? 'bg-cyan-500 text-black shadow-[0_0_15px_rgba(6,182,212,0.4)]'
-                  : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.45)] border border-cyan-400/50'
+                  : 'bg-[#121933] text-slate-300 hover:text-white border border-white/10'
               }`}
             >
               {st === 'ALL'
@@ -250,7 +250,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
               sound.playClick();
               onRefreshOrders();
             }}
-            className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-all ml-1 cursor-pointer"
+            className="p-2 rounded-xl bg-[#121933] hover:bg-[#1a2347] border border-white/10 text-slate-300 hover:text-white transition-all ml-1 cursor-pointer"
             title="Refresh Orders"
           >
             <RefreshCw className="w-4 h-4" />
@@ -259,11 +259,11 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
       </div>
 
       {/* Orders Table */}
-      <div className="glass-card rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+      <div className="admin-card rounded-2xl border border-white/10 bg-[#0d1326] overflow-hidden shadow-2xl text-white">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/10 bg-white/5 text-[11px] font-tech text-slate-400 uppercase tracking-wider">
+              <tr className="border-b border-white/10 bg-[#121933] text-[11px] font-tech text-slate-300 uppercase tracking-wider">
                 <th className="py-3 px-4">Order ID & ពេលវេលា</th>
                 <th className="py-3 px-4">ហ្គេម & កញ្ចប់ពេជ្រ</th>
                 <th className="py-3 px-4">គណនីអ្នកលេង (Account)</th>
@@ -424,7 +424,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
       {/* Order Detail Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="glass-card rounded-3xl border border-cyan-500/40 p-6 sm:p-8 max-w-lg w-full relative animate-in fade-in zoom-in-95">
+          <div className="admin-card bg-[#0d1326] rounded-3xl border border-cyan-500/40 p-6 sm:p-8 max-w-lg w-full relative animate-in fade-in zoom-in-95 text-white">
             <button
               onClick={() => setSelectedOrder(null)}
               className="absolute top-5 right-5 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all"

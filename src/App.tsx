@@ -135,6 +135,15 @@ export function App() {
       document.head.appendChild(metaTheme);
     }
 
+    if (currentRoute === 'admin') {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.backgroundColor = '#070913';
+      document.body.style.backgroundColor = '#070913';
+      metaTheme.setAttribute('content', '#070913');
+      return;
+    }
+
     if (themeMode === 'light') {
       document.documentElement.classList.remove('dark');
       document.documentElement.classList.add('light');
@@ -149,7 +158,7 @@ export function App() {
       metaTheme.setAttribute('content', '#070913');
     }
     localStorage.setItem('aura_theme_mode', themeMode);
-  }, [themeMode]);
+  }, [themeMode, currentRoute]);
 
   const handleSelectGame = (game: Game) => {
     setSelectedGame(game);
@@ -232,19 +241,23 @@ export function App() {
   if (currentRoute === 'admin') {
     if (!adminUser) {
       return (
-        <AdminLogin
-          onLoginSuccess={() => setAdminUser(checkAdminSession())}
-          onBackToStore={navigateToStore}
-        />
+        <div className="admin-theme dark min-h-screen bg-[#070913] text-white">
+          <AdminLogin
+            onLoginSuccess={() => setAdminUser(checkAdminSession())}
+            onBackToStore={navigateToStore}
+          />
+        </div>
       );
     }
     return (
-      <AdminDashboard
-        adminUser={adminUser}
-        onLogout={() => setAdminUser(null)}
-        onNavigateToStore={navigateToStore}
-        onCatalogChange={(newGames) => setGames(newGames)}
-      />
+      <div className="admin-theme dark min-h-screen bg-[#070913] text-white">
+        <AdminDashboard
+          adminUser={adminUser}
+          onLogout={() => setAdminUser(null)}
+          onNavigateToStore={navigateToStore}
+          onCatalogChange={(newGames) => setGames(newGames)}
+        />
+      </div>
     );
   }
 
