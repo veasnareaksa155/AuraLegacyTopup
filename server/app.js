@@ -29,18 +29,20 @@ app.get('/api/health', (req, res) => {
 
 // MooGold Status Endpoint
 app.get('/api/moogold/status', (req, res) => {
-  const hasPartnerId = Boolean(process.env.MOOGOLD_PARTNER_ID);
-  const hasSecretKey = Boolean(process.env.MOOGOLD_SECRET_KEY);
-  const isSandbox = process.env.MOOGOLD_SANDBOX === 'true' || !hasPartnerId || !hasSecretKey;
+  const partnerId = process.env.MOOGOLD_PARTNER_ID || '439c30de1ab4a6932c4b52d471fe6a36';
+  const secretKey = process.env.MOOGOLD_SECRET_KEY || 'TqJSFA0yBs';
+  const hasPartnerId = Boolean(partnerId);
+  const hasSecretKey = Boolean(secretKey);
+  const isSandbox = process.env.MOOGOLD_SANDBOX === 'true';
 
   res.json({
     isReady: true,
     isConfigured: hasPartnerId && hasSecretKey,
     mode: isSandbox ? 'SANDBOX (Simulation Ready)' : 'LIVE (Connected to MooGold)',
-    partnerIdMasked: hasPartnerId ? `${process.env.MOOGOLD_PARTNER_ID.slice(0, 3)}***` : 'Not Set',
+    partnerIdMasked: hasPartnerId ? `${partnerId.slice(0, 4)}***` : 'Not Set',
     endpoint: process.env.MOOGOLD_BASE_URL || 'https://moogold.com/wp-json/v1/api/',
     staticProxy: {
-      enabled: process.env.STATIC_PROXY_ENABLED === 'true',
+      enabled: process.env.STATIC_PROXY_ENABLED !== 'false',
       staticIp: process.env.STATIC_OUTBOUND_IP || '142.111.67.146',
       country: 'Japan (Tokyo)',
     },
