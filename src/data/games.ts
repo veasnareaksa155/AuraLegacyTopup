@@ -25,18 +25,18 @@ export const POPULAR_GAMES: Game[] = [
       'Diamond otomatis masuk dalam hitungan detik!'
     ],
     denominations: [
-      { id: 'ml-86', name: '86 Diamonds', amount: '86 💎', price: 21600, originalPrice: 24000, bonus: '+8 Bonus', popular: true, category: 'diamonds' }, // $1.35 (Wholesale: $1.25)
-      { id: 'ml-172', name: '172 Diamonds', amount: '172 💎', price: 43200, originalPrice: 48000, bonus: '+16 Bonus', category: 'diamonds' }, // $2.70 (Wholesale: $2.47)
-      { id: 'ml-257', name: '257 Diamonds', amount: '257 💎', price: 63200, originalPrice: 72000, bonus: '+23 Bonus', category: 'diamonds' }, // $3.95 (Wholesale: $3.58)
-      { id: 'ml-wdp', name: 'Weekly Diamond Pass', amount: 'Pass 🎫', price: 29600, originalPrice: 35000, bonus: '210 💎 Total + Items', popular: true, category: 'membership' }, // $1.85 (Wholesale: $1.54)
-      { id: 'ml-344', name: '344 Diamonds', amount: '344 💎', price: 104000, originalPrice: 115000, bonus: '+32 Bonus', category: 'diamonds' }, // $6.50 (Wholesale: $5.90)
-      { id: 'ml-429', name: '429 Diamonds', amount: '429 💎', price: 124800, originalPrice: 138000, bonus: '+40 Bonus', category: 'diamonds' }, // $7.80 (Wholesale: $7.07)
-      { id: 'ml-514', name: '514 Diamonds', amount: '514 💎', price: 142400, originalPrice: 158000, bonus: '+52 Bonus', category: 'diamonds' }, // $8.90 (Wholesale: $7.96)
-      { id: 'ml-706', name: '706 Diamonds', amount: '706 💎', price: 172800, originalPrice: 192000, bonus: '+65 Bonus', popular: true, category: 'diamonds' }, // $10.80 (Wholesale: $9.73)
-      { id: 'ml-starlight', name: 'Starlight Member Pass', amount: 'Starlight ✨', price: 147200, originalPrice: 165000, bonus: 'Skin Eksklusif + 30 Hari', popular: true, category: 'membership' }, // $9.20 (Wholesale: $8.32)
-      { id: 'ml-1050', name: '1050 Diamonds', amount: '1050 💎', price: 312000, originalPrice: 345000, bonus: '+100 Bonus', category: 'diamonds' }, // $19.50 (Wholesale: $17.79)
-      { id: 'ml-2195', name: '2195 Diamonds', amount: '2195 💎', price: 520000, originalPrice: 576000, bonus: '+220 Bonus', category: 'diamonds' }, // $32.50 (Wholesale: $29.45)
-      { id: 'ml-twilight', name: 'Twilight Pass', amount: 'Twilight 👑', price: 147200, originalPrice: 165000, bonus: 'Suzuhime Skin + Tickets', category: 'membership' }, // $9.20 (Wholesale: $8.32)
+      { id: 'ml-86', name: '86 Diamonds', amount: '86 💎', price: 20800, originalPrice: 24000, bonus: '+8 Bonus', popular: true, category: 'diamonds' }, // $1.30 (Wholesale: $1.25, Profit: +$0.05)
+      { id: 'ml-172', name: '172 Diamonds', amount: '172 💎', price: 40800, originalPrice: 48000, bonus: '+16 Bonus', category: 'diamonds' }, // $2.55 (Wholesale: $2.47, Profit: +$0.08)
+      { id: 'ml-257', name: '257 Diamonds', amount: '257 💎', price: 59200, originalPrice: 72000, bonus: '+23 Bonus', category: 'diamonds' }, // $3.70 (Wholesale: $3.58, Profit: +$0.12)
+      { id: 'ml-wdp', name: 'Weekly Diamond Pass', amount: 'Pass 🎫', price: 26400, originalPrice: 35000, bonus: '210 💎 Total + Items', popular: true, category: 'membership' }, // $1.65 (Wholesale: $1.54, Profit: +$0.11)
+      { id: 'ml-344', name: '344 Diamonds', amount: '344 💎', price: 97600, originalPrice: 115000, bonus: '+32 Bonus', category: 'diamonds' }, // $6.10 (Wholesale: $5.90, Profit: +$0.20)
+      { id: 'ml-429', name: '429 Diamonds', amount: '429 💎', price: 117600, originalPrice: 138000, bonus: '+40 Bonus', category: 'diamonds' }, // $7.35 (Wholesale: $7.07, Profit: +$0.28)
+      { id: 'ml-514', name: '514 Diamonds', amount: '514 💎', price: 132000, originalPrice: 158000, bonus: '+52 Bonus', category: 'diamonds' }, // $8.25 (Wholesale: $7.96, Profit: +$0.29)
+      { id: 'ml-706', name: '706 Diamonds', amount: '706 💎', price: 161600, originalPrice: 192000, bonus: '+65 Bonus', popular: true, category: 'diamonds' }, // $10.10 (Wholesale: $9.73, Profit: +$0.37)
+      { id: 'ml-starlight', name: 'Starlight Member Pass', amount: 'Starlight ✨', price: 138400, originalPrice: 165000, bonus: 'Skin Eksklusif + 30 Hari', popular: true, category: 'membership' }, // $8.65 (Wholesale: $8.32, Profit: +$0.33)
+      { id: 'ml-1050', name: '1050 Diamonds', amount: '1050 💎', price: 293600, originalPrice: 345000, bonus: '+100 Bonus', category: 'diamonds' }, // $18.35 (Wholesale: $17.79, Profit: +$0.56)
+      { id: 'ml-2195', name: '2195 Diamonds', amount: '2195 💎', price: 485600, originalPrice: 576000, bonus: '+220 Bonus', category: 'diamonds' }, // $30.35 (Wholesale: $29.45, Profit: +$0.90)
+      { id: 'ml-twilight', name: 'Twilight Pass', amount: 'Twilight 👑', price: 138400, originalPrice: 165000, bonus: 'Suzuhime Skin + Tickets', category: 'membership' }, // $8.65 (Wholesale: $8.32, Profit: +$0.33)
     ]
   },
   {
@@ -61,13 +61,13 @@ export const POPULAR_GAMES: Game[] = [
       'Kristal akan langsung bertambah di dalam game!'
     ],
     denominations: [
-      { id: 'gi-welkin', name: 'Blessing of the Welkin Moon', amount: 'Welkin 🌙', price: 87800, originalPrice: 99000, bonus: '3000 Primogems Total', popular: true, category: 'membership' }, // $5.49 (Wholesale: $4.99)
-      { id: 'gi-60', name: '60 Genesis Crystals', amount: '60 💠', price: 18400, originalPrice: 21000, bonus: 'First Topup 2x', category: 'diamonds' }, // $1.15 (Wholesale: $0.99)
-      { id: 'gi-300', name: '300 + 30 Genesis Crystals', amount: '330 💠', price: 87800, originalPrice: 99000, bonus: '+30 Bonus', category: 'diamonds' }, // $5.49 (Wholesale: $4.99)
-      { id: 'gi-980', name: '980 + 110 Genesis Crystals', amount: '1090 💠', price: 264000, originalPrice: 295000, bonus: '+110 Bonus', popular: true, category: 'diamonds' }, // $16.50 (Wholesale: $14.99)
-      { id: 'gi-1980', name: '1980 + 260 Genesis Crystals', amount: '2240 💠', price: 520000, originalPrice: 580000, bonus: '+260 Bonus', category: 'diamonds' }, // $32.50 (Wholesale: $29.99)
-      { id: 'gi-3280', name: '3280 + 600 Genesis Crystals', amount: '3880 💠', price: 862400, originalPrice: 950000, bonus: '+600 Bonus', category: 'diamonds' }, // $53.90 (Wholesale: $49.99)
-      { id: 'gi-6480', name: '6480 + 1600 Genesis Crystals', amount: '8080 💠', price: 1720000, originalPrice: 1900000, popular: true, category: 'diamonds' }, // $107.50 (Wholesale: $99.99)
+      { id: 'gi-welkin', name: 'Blessing of the Welkin Moon', amount: 'Welkin 🌙', price: 82400, originalPrice: 95000, bonus: '3000 Primogems Total', popular: true, category: 'membership' }, // $5.15 (Wholesale: $4.99, Profit: +$0.16)
+      { id: 'gi-60', name: '60 Genesis Crystals', amount: '60 💠', price: 16800, originalPrice: 20000, bonus: 'First Topup 2x', category: 'diamonds' }, // $1.05 (Wholesale: $0.99, Profit: +$0.06)
+      { id: 'gi-300', name: '300 + 30 Genesis Crystals', amount: '330 💠', price: 82400, originalPrice: 95000, bonus: '+30 Bonus', category: 'diamonds' }, // $5.15 (Wholesale: $4.99, Profit: +$0.16)
+      { id: 'gi-980', name: '980 + 110 Genesis Crystals', amount: '1090 💠', price: 247200, originalPrice: 280000, bonus: '+110 Bonus', popular: true, category: 'diamonds' }, // $15.45 (Wholesale: $14.99, Profit: +$0.46)
+      { id: 'gi-1980', name: '1980 + 260 Genesis Crystals', amount: '2240 💠', price: 493600, originalPrice: 560000, bonus: '+260 Bonus', category: 'diamonds' }, // $30.85 (Wholesale: $29.99, Profit: +$0.86)
+      { id: 'gi-3280', name: '3280 + 600 Genesis Crystals', amount: '3880 💠', price: 822400, originalPrice: 920000, bonus: '+600 Bonus', category: 'diamonds' }, // $51.40 (Wholesale: $49.99, Profit: +$1.41)
+      { id: 'gi-6480', name: '6480 + 1600 Genesis Crystals', amount: '8080 💠', price: 1640000, originalPrice: 1850000, popular: true, category: 'diamonds' }, // $102.50 (Wholesale: $99.99, Profit: +$2.51)
     ]
   },
   {
@@ -118,14 +118,14 @@ export const POPULAR_GAMES: Game[] = [
       'Konfirmasi pesanan dan Diamond masuk kilat!'
     ],
     denominations: [
-      { id: 'ff-70', name: '50 Diamonds', amount: '50 💎', price: 10400, originalPrice: 12000, category: 'diamonds' }, // $0.65 (Wholesale: $0.50)
-      { id: 'ff-140', name: '110 Diamonds', amount: '110 💎', price: 19200, originalPrice: 22000, category: 'diamonds' }, // $1.20 (Wholesale: $1.00)
-      { id: 'ff-355', name: '341 Diamonds', amount: '341 💎', price: 53600, originalPrice: 60000, bonus: '+35 Bonus', popular: true, category: 'diamonds' }, // $3.35 (Wholesale: $2.95)
-      { id: 'ff-720', name: '572 Diamonds', amount: '572 💎', price: 79840, originalPrice: 90000, bonus: '+80 Bonus', popular: true, category: 'diamonds' }, // $4.99 (Wholesale: $4.42)
-      { id: 'ff-member-w', name: 'Weekly Membership', amount: 'Weekly 🎫', price: 31840, originalPrice: 38000, bonus: '450 💎 Total', popular: true, category: 'membership' }, // $1.99 (Wholesale: $1.70)
-      { id: 'ff-member-m', name: 'Monthly Membership', amount: 'Monthly 👑', price: 143840, originalPrice: 165000, bonus: '2600 💎 Total', category: 'membership' }, // $8.99 (Wholesale: $7.98)
-      { id: 'ff-1440', name: '1166 Diamonds', amount: '1166 💎', price: 168000, originalPrice: 190000, bonus: '+160 Bonus', category: 'diamonds' }, // $10.50 (Wholesale: $9.48)
-      { id: 'ff-2180', name: '2398 Diamonds', amount: '2398 💎', price: 328000, originalPrice: 365000, bonus: '+250 Bonus', category: 'diamonds' }, // $20.50 (Wholesale: $18.54)
+      { id: 'ff-70', name: '50 Diamonds', amount: '50 💎', price: 8800, originalPrice: 12000, category: 'diamonds' }, // $0.55 (Wholesale: $0.50, Profit: +$0.05)
+      { id: 'ff-140', name: '110 Diamonds', amount: '110 💎', price: 17280, originalPrice: 22000, category: 'diamonds' }, // $1.08 (Wholesale: $1.00, Profit: +$0.08)
+      { id: 'ff-355', name: '341 Diamonds', amount: '341 💎', price: 49600, originalPrice: 60000, bonus: '+35 Bonus', popular: true, category: 'diamonds' }, // $3.10 (Wholesale: $2.95, Profit: +$0.15)
+      { id: 'ff-720', name: '572 Diamonds', amount: '572 💎', price: 74400, originalPrice: 90000, bonus: '+80 Bonus', popular: true, category: 'diamonds' }, // $4.65 (Wholesale: $4.42, Profit: +$0.23)
+      { id: 'ff-member-w', name: 'Weekly Membership', amount: 'Weekly 🎫', price: 28800, originalPrice: 38000, bonus: '450 💎 Total', popular: true, category: 'membership' }, // $1.80 (Wholesale: $1.70, Profit: +$0.10)
+      { id: 'ff-member-m', name: 'Monthly Membership', amount: 'Monthly 👑', price: 133600, originalPrice: 165000, bonus: '2600 💎 Total', category: 'membership' }, // $8.35 (Wholesale: $7.98, Profit: +$0.37)
+      { id: 'ff-1440', name: '1166 Diamonds', amount: '1166 💎', price: 158400, originalPrice: 190000, bonus: '+160 Bonus', category: 'diamonds' }, // $9.90 (Wholesale: $9.48, Profit: +$0.42)
+      { id: 'ff-2180', name: '2398 Diamonds', amount: '2398 💎', price: 307200, originalPrice: 365000, bonus: '+250 Bonus', category: 'diamonds' }, // $19.20 (Wholesale: $18.54, Profit: +$0.66)
     ]
   },
   {
