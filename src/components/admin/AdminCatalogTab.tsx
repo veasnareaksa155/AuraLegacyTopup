@@ -11,6 +11,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import type { Game, GameDenomination } from '../../types';
+import { POPULAR_GAMES } from '../../data/games';
 import { catalogService } from '../../services/catalogService';
 import { sound } from '../../utils/sound';
 
@@ -35,7 +36,12 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
   useEffect(() => {
     const found = games.find((g) => g.id === selectedGameId);
     if (found) {
-      setCurrentGame(JSON.parse(JSON.stringify(found)));
+      const cloned = JSON.parse(JSON.stringify(found));
+      if (cloned.banner && (cloned.banner.includes('YrkR-GP7OKghBTAT') || cloned.banner.includes('ZHLmkdTW2Q'))) {
+        const def = POPULAR_GAMES.find((p) => p.id === cloned.id);
+        if (def) cloned.banner = def.banner;
+      }
+      setCurrentGame(cloned);
     }
   }, [selectedGameId, games]);
 
@@ -324,74 +330,114 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                 return (
                   <div
                     key={denom.id}
-                    className="p-3.5 rounded-xl bg-[#121933] border border-white/10 hover:border-cyan-500/40 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md"
+                    className="p-4 sm:p-5 rounded-2xl bg-[#0f162e] border border-white/10 hover:border-cyan-500/40 transition-all shadow-lg space-y-3.5 group"
                   >
-                    {/* Item info */}
-                    <div className="flex items-center gap-3 flex-1 min-w-[200px]">
-                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 font-mono text-xs font-bold">
-                        {index + 1}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
+                    {/* Tier 1: Item Header (Index, Name, Popular Badge & Action Buttons) */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+                      {/* Left: Index badge + Name Input */}
+                      <div className="flex items-center gap-2.5 flex-1 min-w-[240px]">
+                        <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono text-xs font-black flex-shrink-0 shadow-sm">
+                          #{index + 1}
+                        </div>
+                        <div className="flex-1">
                           <input
                             type="text"
                             value={denom.name}
                             onChange={(e) => handleDenomFieldChange(denom.id, 'name', e.target.value)}
-                            className="bg-transparent border-b border-transparent hover:border-white/20 focus:border-cyan-400 font-bold text-sm text-white focus:outline-none transition-all py-0.5"
-                          />
-                          {denom.popular && (
-                            <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/40">
-                              ⭐ Popular
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <input
-                            type="text"
-                            value={denom.amount}
-                            onChange={(e) => handleDenomFieldChange(denom.id, 'amount', e.target.value)}
-                            placeholder="Pack text"
-                            className="text-[11px] text-cyan-300 font-mono bg-[#080c1d] px-2.5 py-1 rounded-lg border border-white/15 focus:outline-none focus:border-cyan-400 max-w-[100px]"
-                          />
-                          <input
-                            type="text"
-                            value={denom.bonus || ''}
-                            onChange={(e) => handleDenomFieldChange(denom.id, 'bonus', e.target.value)}
-                            placeholder="+ Bonus Tag (optional)"
-                            className="text-[11px] text-slate-300 bg-[#080c1d] px-2.5 py-1 rounded-lg border border-white/15 focus:outline-none focus:border-cyan-400 flex-1"
+                            placeholder="ឈ្មោះកញ្ចប់ (Item Name)"
+                            className="w-full bg-[#080c1d] border border-white/15 px-3 py-1.5 rounded-xl font-bold text-sm text-white focus:outline-none focus:border-cyan-400 font-display transition-all"
                           />
                         </div>
+                        {denom.popular && (
+                          <span className="px-2 py-1 rounded-lg bg-amber-500/15 text-amber-300 text-[10px] font-bold border border-amber-500/30 flex items-center gap-1 flex-shrink-0 shadow-xs">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                            <span>Popular</span>
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Right: Actions */}
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => handleDenomFieldChange(denom.id, 'popular', !denom.popular)}
+                          className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                            denom.popular
+                              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-xs'
+                              : 'bg-white/5 text-slate-400 border-white/10 hover:text-white hover:bg-white/10'
+                          }`}
+                          title="កំណត់ជាកញ្ចប់ពេញនិយម (Popular)"
+                        >
+                          <Star className={`w-3.5 h-3.5 ${denom.popular ? 'fill-amber-400 text-amber-400' : ''}`} />
+                          <span className="text-[11px] font-tech">{denom.popular ? 'Starred' : 'Star'}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteDenom(denom.id)}
+                          className="p-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 hover:text-rose-300 transition-all cursor-pointer"
+                          title="លុបកញ្ចប់នេះ"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
 
-                    {/* Price Inputs */}
-                    <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
-                      {/* Retail Price USD */}
-                      <div className="flex-1 sm:flex-initial">
-                        <label className="block text-[10px] font-tech text-emerald-400 uppercase font-bold">
-                          តម្លៃលក់ (USD)
+                    {/* Tier 2: Amount & Bonus Inputs (Clear 2-column grid) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-tech text-cyan-400 uppercase font-bold mb-1">
+                          បរិមាណបង្ហាញ (Amount Tag)
                         </label>
-                        <div className="relative mt-0.5">
+                        <input
+                          type="text"
+                          value={denom.amount}
+                          onChange={(e) => handleDenomFieldChange(denom.id, 'amount', e.target.value)}
+                          placeholder="ឧទាហរណ៍៖ 86 💎"
+                          className="w-full bg-[#080c1d] border border-white/15 px-3 py-1.5 rounded-xl text-xs text-cyan-300 font-mono font-bold focus:outline-none focus:border-cyan-400"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-tech text-slate-400 uppercase font-bold mb-1">
+                          ប្រាក់រង្វាន់បន្ថែម (Bonus Tag - Optional)
+                        </label>
+                        <input
+                          type="text"
+                          value={denom.bonus || ''}
+                          onChange={(e) => handleDenomFieldChange(denom.id, 'bonus', e.target.value)}
+                          placeholder="ឧទាហរណ៍៖ +8 Bonus"
+                          className="w-full bg-[#080c1d] border border-white/15 px-3 py-1.5 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-cyan-400"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Tier 3: 4-Column Financial Stats & Profit Bar */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 pt-1 border-t border-white/5">
+                      {/* 1. Retail Selling Price */}
+                      <div className="p-3 rounded-xl bg-[#080c1d] border border-emerald-500/40 shadow-inner flex flex-col justify-between">
+                        <span className="block text-[10px] font-tech text-emerald-400 uppercase font-bold tracking-wider">
+                          តម្លៃលក់ (Selling USD)
+                        </span>
+                        <div className="relative mt-1">
                           <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-emerald-400 font-bold text-xs">$</span>
                           <input
                             type="number"
                             step="0.01"
                             value={priceUsd}
                             onChange={(e) => handlePriceChangeUsd(denom.id, e.target.value)}
-                            className="w-24 bg-[#080c1d] border border-emerald-500/60 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono font-bold text-emerald-400 focus:outline-none focus:border-emerald-400"
+                            className="w-full bg-black/40 border border-emerald-500/50 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono font-black text-emerald-400 focus:outline-none focus:border-emerald-400"
                           />
                         </div>
-                        <span className="text-[10px] text-emerald-300/80 font-mono block mt-0.5">
-                          ~{priceKhr} ៛
+                        <span className="text-[10px] text-emerald-300/80 font-mono block mt-1.5">
+                          ~{priceKhr} ៛ (KHR)
                         </span>
                       </div>
 
-                      {/* Original Price USD */}
-                      <div className="flex-1 sm:flex-initial">
-                        <label className="block text-[10px] font-tech text-slate-400 uppercase font-bold">
-                          តម្លៃដើម (Original)
-                        </label>
-                        <div className="relative mt-0.5">
+                      {/* 2. Original Price for Discount */}
+                      <div className="p-3 rounded-xl bg-[#080c1d] border border-white/15 shadow-inner flex flex-col justify-between">
+                        <span className="block text-[10px] font-tech text-slate-400 uppercase font-bold tracking-wider">
+                          តម្លៃដើម (Original USD)
+                        </span>
+                        <div className="relative mt-1">
                           <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">$</span>
                           <input
                             type="number"
@@ -399,72 +445,54 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                             value={origUsd}
                             onChange={(e) => handleOrigPriceChangeUsd(denom.id, e.target.value)}
                             placeholder="0.00"
-                            className="w-20 bg-[#080c1d] border border-white/15 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-400"
+                            className="w-full bg-black/40 border border-white/15 pl-6 pr-2 py-1.5 rounded-lg text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-400"
                           />
                         </div>
-                        <span className="text-[10px] text-slate-500 font-mono block mt-0.5">
+                        <span className="text-[10px] text-slate-500 font-mono block mt-1.5">
                           សម្រាប់ Discount
                         </span>
                       </div>
 
-                      {/* Payment Fee Display */}
-                      <div className="flex-1 sm:flex-initial">
-                        <label className="block text-[10px] font-tech text-cyan-400 uppercase font-bold">
+                      {/* 3. Payment Fee */}
+                      <div className="p-3 rounded-xl bg-[#080c1d] border border-white/15 shadow-inner flex flex-col justify-between">
+                        <span className="block text-[10px] font-tech text-cyan-400 uppercase font-bold tracking-wider">
                           សេវាទូទាត់ (Fee)
-                        </label>
-                        <div className="mt-0.5 px-2 py-1.5 rounded-lg bg-[#080c1d] border border-white/15 text-xs font-mono text-emerald-400 font-bold flex items-center justify-center">
-                          0% ($0.00)
+                        </span>
+                        <div className="mt-1 py-1.5 px-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-xs font-mono text-cyan-400 font-bold text-center">
+                          0% FREE
                         </div>
-                        <span className="text-[10px] text-slate-500 font-mono block mt-0.5">
-                          KHQR Free
+                        <span className="text-[10px] text-slate-500 font-mono block mt-1.5 text-center">
+                          $0.00 (KHQR ឥតគិតថ្លៃ)
                         </span>
                       </div>
 
-                      {/* Profit Estimation */}
+                      {/* 4. Net Profit */}
                       {(() => {
                         const priceNum = parseFloat(priceUsd) || 0;
                         const costEst = Number((priceNum * 0.90).toFixed(2));
                         const profitEst = Number((priceNum - costEst).toFixed(2));
                         const profitKhr = Math.round(profitEst * 4100);
+                        const margin = priceNum > 0 ? ((profitEst / priceNum) * 100).toFixed(1) : '10.0';
                         return (
-                          <div className="flex-1 sm:flex-initial">
-                            <label className="block text-[10px] font-tech text-emerald-400 uppercase font-bold flex items-center gap-1">
-                              <TrendingUp className="w-3 h-3" />
-                              <span>ចំណេញ (Profit)</span>
-                            </label>
-                            <div className="mt-0.5 px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-400 font-black flex items-center justify-center">
+                          <div className="p-3 rounded-xl bg-[#080c1d] border border-emerald-500/30 ring-1 ring-emerald-500/20 shadow-inner flex flex-col justify-between">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-tech text-emerald-400 uppercase font-bold tracking-wider flex items-center gap-1">
+                                <TrendingUp className="w-3 h-3 text-emerald-400" />
+                                <span>ចំណេញ (Profit)</span>
+                              </span>
+                              <span className="text-[9px] font-mono text-emerald-400/90 font-bold bg-emerald-500/20 px-1 py-0.2 rounded">
+                                {margin}%
+                              </span>
+                            </div>
+                            <div className="mt-1 py-1 px-2 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-xs font-mono text-emerald-300 font-black text-center">
                               +${profitEst.toFixed(2)}
                             </div>
-                            <span className="text-[10px] text-emerald-300/80 font-mono block mt-0.5">
-                              ~{profitKhr.toLocaleString()} ៛
+                            <span className="text-[10px] text-emerald-300/80 font-mono block mt-1.5 text-center">
+                              ~{profitKhr.toLocaleString()} ៛ (Net)
                             </span>
                           </div>
                         );
                       })()}
-
-                      {/* Popular Toggle & Delete */}
-                      <div className="flex items-center gap-1.5 pt-4">
-                        <button
-                          type="button"
-                          onClick={() => handleDenomFieldChange(denom.id, 'popular', !denom.popular)}
-                          className={`p-2 rounded-lg border transition-all cursor-pointer ${
-                            denom.popular
-                              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-xs'
-                              : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'
-                          }`}
-                          title="Toggle Popular Badge"
-                        >
-                          <Star className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteDenom(denom.id)}
-                          className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 hover:text-rose-300 transition-all cursor-pointer"
-                          title="លុបកញ្ចប់នេះ"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
                     </div>
                   </div>
                 );

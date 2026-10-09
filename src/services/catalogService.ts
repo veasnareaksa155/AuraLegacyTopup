@@ -20,7 +20,13 @@ class CatalogService {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          return parsed.map((g: Game) => {
+            const def = POPULAR_GAMES.find((p) => p.id === g.id);
+            if (def && (!g.banner || g.banner.includes('YrkR-GP7OKghBTAT') || g.banner.includes('ZHLmkdTW2Q'))) {
+              return { ...g, banner: def.banner };
+            }
+            return g;
+          });
         }
       }
     } catch (e) {

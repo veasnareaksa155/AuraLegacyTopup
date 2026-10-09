@@ -1,4 +1,7 @@
 import type { Game, PromoCode } from '../types';
+import mlbbBanner from '../assets/banners/mlbb.jpg';
+import valorantBanner from '../assets/banners/valorant.jpg';
+import genshinBanner from '../assets/banners/genshin.jpg';
 
 export const POPULAR_GAMES: Game[] = [
   {
@@ -8,7 +11,7 @@ export const POPULAR_GAMES: Game[] = [
     category: 'mobile',
     trending: true,
     popular: true,
-    banner: 'https://play-lh.googleusercontent.com/YrkR-GP7OKghBTATCoO_jJrchSVrh-NSUBb5DnbRZC1DbLK_cgV9FC2e_iI4GzLsKXuZjuFZajnGCiA8qA=w1200-h600',
+    banner: mlbbBanner,
     thumbnail: 'https://play-lh.googleusercontent.com/MztmLpB1-_eFbHnqNzzvzl5zjiOH2BEb0D71uBxZYf_4BEmW3QEPWODhRtyqY7Qz4wRLwQ--Rg1RAjOFqtHSs-o=w600-h600',
     hasZoneId: true,
     userIdLabel: 'User ID',
@@ -46,7 +49,7 @@ export const POPULAR_GAMES: Game[] = [
     category: 'mobile',
     trending: true,
     popular: true,
-    banner: 'https://play-lh.googleusercontent.com/ZHLmkdTW2Q_T_DVxu9piEOwkJtcXEkmeIGiJXhwcdYSS6-L51bHuEvlVqpt3dPM_McPJ1enEo6FwnbrxOak=w1200-h600',
+    banner: genshinBanner,
     thumbnail: 'https://play-lh.googleusercontent.com/PQEqjOxr-3uZaNHmWoQinLVQQ9fbSegMKXmqgFm5nGgagqC2REH-1er3BguYStWbH3YStijj5WH1DDlwPh2ehw=w600-h600',
     hasZoneId: false,
     userIdLabel: 'UID (User ID)',
@@ -77,7 +80,7 @@ export const POPULAR_GAMES: Game[] = [
     category: 'pc',
     trending: true,
     popular: true,
-    banner: 'https://media.rawg.io/media/games/b11/b11127b9ee3c3701bd15b9af3286d20e.jpg',
+    banner: valorantBanner,
     thumbnail: 'https://media.rawg.io/media/crop/600/400/games/b11/b11127b9ee3c3701bd15b9af3286d20e.jpg',
     hasZoneId: false,
     userIdLabel: 'Riot ID',
