@@ -15,13 +15,37 @@ import { MobileBottomNav } from './components/MobileBottomNav';
 import { Footer } from './components/Footer';
 import { LiveChatWidget } from './components/LiveChatWidget';
 
-import { POPULAR_GAMES } from './data/games';
 import type { Game, Currency, AuraTheme, Language, ThemeMode } from './types';
 import { TRANSLATIONS } from './utils/i18n';
 import { sound } from './utils/sound';
 import { HelpCircle, ChevronDown, ShieldCheck, Zap, Headphones, Sparkles } from 'lucide-react';
+import { AdminLogin } from './components/admin/AdminLogin';
+import { AdminDashboard } from './components/admin/AdminDashboard';
+import { checkAdminSession, type AdminUser } from './services/adminAuth';
+import { catalogService } from './services/catalogService';
+
+function getRouteFromLocation(): 'store' | 'admin' {
+  const path = window.location.pathname.toLowerCase();
+  const hash = window.location.hash.toLowerCase();
+  const search = window.location.search.toLowerCase();
+  if (
+    path === '/admin' ||
+    path.startsWith('/admin/') ||
+    hash === '#/admin' ||
+    hash.startsWith('#/admin/') ||
+    search.includes('route=admin')
+  ) {
+    return 'admin';
+  }
+  return 'store';
+}
 
 export function App() {
+  // Routing & Admin Session
+  const [currentRoute, setCurrentRoute] = useState<'store' | 'admin'>(() => getRouteFromLocation());
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(() => checkAdminSession());
+  const [games, setGames] = useState<Game[]>(() => catalogService.getGames());
+
   // Navigation & Game State
   const [currentTab, setCurrentTab] = useState<string>('home');
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
@@ -36,6 +60,38 @@ export function App() {
     const saved = localStorage.getItem('aura_theme_mode');
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
   });
+
+  // Listen to browser navigation & catalog updates
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentRoute(getRouteFromLocation());
+    };
+
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+
+    const unsubCatalog = catalogService.subscribe((updatedGames) => {
+      setGames(updatedGames);
+    });
+
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+      unsubCatalog();
+    };
+  }, []);
+
+  const navigateToAdmin = () => {
+    window.history.pushState(null, '', '/admin');
+    setCurrentRoute('admin');
+    window.scrollTo(0, 0);
+  };
+
+  const navigateToStore = () => {
+    window.history.pushState(null, '', '/');
+    setCurrentRoute('store');
+    window.scrollTo(0, 0);
+  };
 
   // Modals
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
@@ -173,6 +229,25 @@ export function App() {
 
   const faqs = FAQ_DATA[lang];
 
+  if (currentRoute === 'admin') {
+    if (!adminUser) {
+      return (
+        <AdminLogin
+          onLoginSuccess={() => setAdminUser(checkAdminSession())}
+          onBackToStore={navigateToStore}
+        />
+      );
+    }
+    return (
+      <AdminDashboard
+        adminUser={adminUser}
+        onLogout={() => setAdminUser(null)}
+        onNavigateToStore={navigateToStore}
+        onCatalogChange={(newGames) => setGames(newGames)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#070913] text-slate-900 dark:text-slate-100 flex flex-col relative selection:bg-cyan-500/30 selection:text-cyan-200 transition-colors duration-500">
       {/* Ambient Visual Aura Layer */}
@@ -226,7 +301,7 @@ export function App() {
             {/* Hero Banner Section */}
             {currentTab === 'home' && (
               <HeroBanner
-                games={POPULAR_GAMES}
+                games={games}
                 t={t}
                 onSelectGame={handleSelectGame}
                 onExploreClick={() => {
@@ -239,7 +314,7 @@ export function App() {
             {/* Flash Deals Section */}
             {(currentTab === 'home' || currentTab === 'flash') && (
               <FlashDeals
-                games={POPULAR_GAMES}
+                games={games}
                 currency={currency}
                 t={t}
                 onSelectDeal={handleSelectFlashDeal}
@@ -248,7 +323,7 @@ export function App() {
 
             {/* Game Catalog Grid */}
             <GameCatalog
-              games={POPULAR_GAMES}
+              games={games}
               currency={currency}
               t={t}
               onSelectGame={handleSelectGame}
@@ -375,12 +450,12 @@ export function App() {
       />
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenAdmin={navigateToAdmin} />
 
       {/* Modals */}
       {isSearchOpen && (
         <SearchModal
-          games={POPULAR_GAMES}
+          games={games}
           currency={currency}
           t={t}
           onSelectGame={handleSelectGame}

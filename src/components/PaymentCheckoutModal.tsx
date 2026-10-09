@@ -13,6 +13,7 @@ import { formatPrice, generateOrderId } from '../utils/format';
 import { sound } from '../utils/sound';
 import { getDenomVisual } from './TopUpTerminal';
 import { executeTopUpOrder, type TopUpOrderResult } from '../services/topupApi';
+import { orderService } from '../services/orderService';
 
 interface CheckoutModalProps {
   orderData: {
@@ -108,6 +109,28 @@ export const PaymentCheckoutModal: React.FC<CheckoutModalProps> = ({
       });
 
       sound.playSuccess();
+
+      // Record to admin orders database
+      orderService.addOrder({
+        id: topupResult.orderId || orderId,
+        gameId: orderData.game.id,
+        gameTitle: orderData.game.title,
+        gameThumbnail: orderData.game.thumbnail,
+        denomId: orderData.denomination.id,
+        denomination: orderData.denomination.name,
+        amount: orderData.denomination.amount,
+        userId: orderData.userId,
+        zoneId: orderData.zoneId,
+        server: orderData.server,
+        whatsapp: orderData.whatsapp,
+        priceIdr: orderData.total,
+        priceUsd: orderData.total / 16000,
+        paymentMethod: orderData.paymentMethod.name,
+        status: topupResult.status,
+        moogoldOrderId: topupResult.orderId,
+        moogoldMessage: topupResult.message,
+      });
+
       onPaymentSuccess({
         orderId: topupResult.orderId || orderId,
         game: orderData.game,
@@ -125,6 +148,25 @@ export const PaymentCheckoutModal: React.FC<CheckoutModalProps> = ({
     } catch (err) {
       console.warn('[Checkout] Falling back to standard completion:', err);
       sound.playSuccess();
+
+      orderService.addOrder({
+        id: orderId,
+        gameId: orderData.game.id,
+        gameTitle: orderData.game.title,
+        gameThumbnail: orderData.game.thumbnail,
+        denomId: orderData.denomination.id,
+        denomination: orderData.denomination.name,
+        amount: orderData.denomination.amount,
+        userId: orderData.userId,
+        zoneId: orderData.zoneId,
+        server: orderData.server,
+        whatsapp: orderData.whatsapp,
+        priceIdr: orderData.total,
+        priceUsd: orderData.total / 16000,
+        paymentMethod: orderData.paymentMethod.name,
+        status: 'COMPLETED',
+      });
+
       onPaymentSuccess({
         orderId,
         game: orderData.game,

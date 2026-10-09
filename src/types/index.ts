@@ -64,7 +64,7 @@ export interface Order {
   paymentFee: number;
   totalPrice: number;
   promoCode?: string;
-  status: 'PENDING_PAYMENT' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  status: 'PENDING_PAYMENT' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'QUEUED';
   createdAt: string;
   paidAt?: string;
 }

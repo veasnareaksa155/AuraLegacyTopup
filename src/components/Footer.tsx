@@ -11,7 +11,11 @@ import {
 import { sound } from '../utils/sound';
 import brandLogo from '../assets/logo.png';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenAdmin?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenAdmin }) => {
   return (
     <footer className="hidden md:block mt-20 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-[#070913]/95 backdrop-blur-xl relative z-10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -101,6 +105,17 @@ export const Footer: React.FC = () => {
               <li className="hover:text-cyan-600 dark:hover:text-cyan-300 cursor-pointer transition-colors">Kebijakan Privasi</li>
               <li className="hover:text-cyan-600 dark:hover:text-cyan-300 cursor-pointer transition-colors">Panduan Pembayaran</li>
               <li className="hover:text-cyan-600 dark:hover:text-cyan-300 cursor-pointer transition-colors">Kemitraan Reseller VIP</li>
+              {onOpenAdmin && (
+                <li
+                  onClick={() => {
+                    sound.playClick();
+                    onOpenAdmin();
+                  }}
+                  className="text-cyan-500 font-bold hover:text-cyan-400 cursor-pointer transition-colors flex items-center gap-1.5 pt-1.5"
+                >
+                  <span>🔐 Admin Portal (ផ្ទាំងគ្រប់គ្រង)</span>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -131,10 +146,22 @@ export const Footer: React.FC = () => {
           <div className="text-[11px] text-slate-500 dark:text-slate-400">
             វិធីសាស្ត្រទូទាត់ផ្លូវការ៖ KHQR Universal Scan (Bakong, ABA Mobile, Wing, ACLEDA, Canadia & គ្រប់ធនាគារនៅកម្ពុជា)
           </div>
-          <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
             <span>© 2026 AuraLegacy Top up. Crafted with</span>
             <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
-            <span>for Gamers. Made by Veasna Reaksa</span>
+            <span>for Gamers.</span>
+            {onOpenAdmin && (
+              <button
+                onClick={() => {
+                  sound.playClick();
+                  onOpenAdmin();
+                }}
+                className="text-slate-500 hover:text-cyan-400 transition-colors ml-2 cursor-pointer font-mono text-[10px]"
+                title="Admin Control Center"
+              >
+                [Admin Portal]
+              </button>
+            )}
           </div>
         </div>
       </div>

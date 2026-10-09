@@ -59,6 +59,10 @@ app.get('/api/moogold/balance', async (req, res) => {
   }
 });
 
+// In-memory data repositories
+const serverOrdersDb = [];
+let serverCatalogDb = null;
+
 // Create Top-up Order
 app.post('/api/moogold/create-order', async (req, res) => {
   try {
@@ -83,6 +87,25 @@ app.post('/api/moogold/create-order', async (req, res) => {
       whatsapp,
     });
 
+    // Automatically record order in server orders repository
+    const recordedOrder = {
+      id: result.order_id || result.partnerOrderId || 'AURA-' + Date.now(),
+      gameId,
+      gameTitle: denomName || gameId,
+      denomId,
+      denomination: denomName || 'Game Item',
+      amount: 'Direct Top-Up',
+      userId,
+      zoneId,
+      server,
+      whatsapp,
+      status: result.status || 'COMPLETED',
+      createdAt: new Date().toISOString(),
+      moogoldOrderId: result.order_id,
+      moogoldMessage: result.message,
+    };
+    serverOrdersDb.unshift(recordedOrder);
+
     res.json(result);
   } catch (error) {
     console.error('[Create Order Error]', error);
@@ -101,5 +124,48 @@ app.get('/api/moogold/order/:orderId', async (req, res) => {
   }
 });
 
+// Admin API Endpoints: Orders
+app.get('/api/admin/orders', (req, res) => {
+  res.json({ success: true, orders: serverOrdersDb });
+});
+
+app.post('/api/admin/orders', (req, res) => {
+  const { order } = req.body;
+  if (order && order.id) {
+    const idx = serverOrdersDb.findIndex((o) => o.id === order.id);
+    if (idx >= 0) {
+      serverOrdersDb[idx] = { ...serverOrdersDb[idx], ...order };
+    } else {
+      serverOrdersDb.unshift(order);
+    }
+  }
+  res.json({ success: true, count: serverOrdersDb.length });
+});
+
+app.put('/api/admin/orders/:id', (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const order = serverOrdersDb.find((o) => o.id === id);
+  if (order) {
+    order.status = status;
+    return res.json({ success: true, order });
+  }
+  res.status(404).json({ success: false, error: 'Order not found' });
+});
+
+// Admin API Endpoints: Catalog
+app.get('/api/admin/catalog', (req, res) => {
+  res.json({ success: true, catalog: serverCatalogDb });
+});
+
+app.post('/api/admin/catalog', (req, res) => {
+  const { games } = req.body;
+  if (Array.isArray(games)) {
+    serverCatalogDb = games;
+  }
+  res.json({ success: true, message: 'Catalog updated successfully' });
+});
+
 export default app;
+
 
