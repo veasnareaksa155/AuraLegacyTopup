@@ -20,7 +20,7 @@ class MooGoldService {
     this.secretKey = process.env.MOOGOLD_SECRET_KEY || 'TqJSFA0yBs';
     this.userId = process.env.MOOGOLD_USER_ID || '919374';
     this.baseUrl = process.env.MOOGOLD_BASE_URL || 'https://moogold.com/wp-json/v1/api/';
-    this.isSandbox = process.env.MOOGOLD_SANDBOX === 'true';
+    this.isSandbox = process.env.FORCE_SANDBOX === 'true';
   }
 
   /**

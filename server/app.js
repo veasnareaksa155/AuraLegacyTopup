@@ -33,12 +33,12 @@ app.get('/api/moogold/status', (req, res) => {
   const secretKey = process.env.MOOGOLD_SECRET_KEY || 'TqJSFA0yBs';
   const hasPartnerId = Boolean(partnerId);
   const hasSecretKey = Boolean(secretKey);
-  const isSandbox = process.env.MOOGOLD_SANDBOX === 'true';
+  const isSandbox = process.env.FORCE_SANDBOX === 'true';
 
   res.json({
     isReady: true,
     isConfigured: hasPartnerId && hasSecretKey,
-    mode: isSandbox ? 'SANDBOX (Simulation Ready)' : 'LIVE (Connected to MooGold)',
+    mode: isSandbox ? 'SANDBOX (Simulation Mode)' : 'LIVE (Connected to MooGold API Engine)',
     partnerIdMasked: hasPartnerId ? `${partnerId.slice(0, 4)}***` : 'Not Set',
     endpoint: process.env.MOOGOLD_BASE_URL || 'https://moogold.com/wp-json/v1/api/',
     staticProxy: {
