@@ -19,7 +19,7 @@ export interface TopUpOrderRequest {
 export interface TopUpOrderResult {
   success: boolean;
   orderId: string;
-  status: 'COMPLETED' | 'PROCESSING' | 'FAILED';
+  status: 'COMPLETED' | 'PROCESSING' | 'FAILED' | 'QUEUED';
   deliveryTime: string;
   isSandbox: boolean;
   message: string;
@@ -51,10 +51,10 @@ export async function executeTopUpOrder(order: TopUpOrderRequest): Promise<TopUp
       const data = await response.json();
       return {
         success: data.success !== false,
-        orderId: data.order_id || 'MG-' + Math.floor(100000 + Math.random() * 900000),
+        orderId: data.order_id || 'AURA-' + Math.floor(100000 + Math.random() * 900000),
         status: data.status || 'COMPLETED',
-        deliveryTime: '1.2 វិនាទី',
-        isSandbox: data.isSandbox ?? true,
+        deliveryTime: data.status === 'QUEUED' ? 'កំពុងរង់ចាំ' : '1.2 វិនាទី',
+        isSandbox: data.isSandbox ?? false,
         message: data.message || 'ការបញ្ចូលពេជ្របានជោគជ័យ!',
         details: data,
       };
