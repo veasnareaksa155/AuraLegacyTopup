@@ -7,7 +7,8 @@ import {
   Image as ImageIcon, 
   CheckCircle2, 
   DollarSign, 
-  Star 
+  Star,
+  TrendingUp
 } from 'lucide-react';
 import type { Game, GameDenomination } from '../../types';
 import { catalogService } from '../../services/catalogService';
@@ -419,6 +420,28 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                         </span>
                       </div>
 
+                      {/* Profit Estimation */}
+                      {(() => {
+                        const priceNum = parseFloat(priceUsd) || 0;
+                        const costEst = Number((priceNum * 0.90).toFixed(2));
+                        const profitEst = Number((priceNum - costEst).toFixed(2));
+                        const profitKhr = Math.round(profitEst * 4100);
+                        return (
+                          <div className="flex-1 sm:flex-initial">
+                            <label className="block text-[10px] font-tech text-emerald-400 uppercase font-bold flex items-center gap-1">
+                              <TrendingUp className="w-3 h-3" />
+                              <span>ចំណេញ (Profit)</span>
+                            </label>
+                            <div className="mt-0.5 px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-400 font-black flex items-center justify-center">
+                              +${profitEst.toFixed(2)}
+                            </div>
+                            <span className="text-[10px] text-emerald-300/80 font-mono block mt-0.5">
+                              ~{profitKhr.toLocaleString()} ៛
+                            </span>
+                          </div>
+                        );
+                      })()}
+
                       {/* Popular Toggle & Delete */}
                       <div className="flex items-center gap-1.5 pt-4">
                         <button
@@ -553,6 +576,19 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                   className="w-full bg-[#080c1d] border border-white/15 px-3.5 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-400"
                 />
               </div>
+
+              {/* Live Estimated Profit Preview */}
+              {newDenomPriceUsd && parseFloat(newDenomPriceUsd) > 0 && (
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs">
+                  <span className="text-emerald-300 font-bold flex items-center gap-1.5">
+                    <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>ប្រាក់ចំណេញប៉ាន់ស្មាន (Est. Profit):</span>
+                  </span>
+                  <span className="font-mono font-black text-emerald-400">
+                    +${(parseFloat(newDenomPriceUsd) * 0.10).toFixed(2)} (~{Math.round(parseFloat(newDenomPriceUsd) * 0.10 * 4100).toLocaleString()} ៛)
+                  </span>
+                </div>
+              )}
 
               <div className="pt-3 flex gap-3">
                 <button

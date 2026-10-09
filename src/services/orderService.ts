@@ -16,6 +16,8 @@ export interface ManagedOrder {
   whatsapp?: string;
   priceIdr: number;
   priceUsd: number;
+  costUsd?: number;
+  profitUsd?: number;
   feeUsd?: number;
   paymentMethod: string;
   status: 'COMPLETED' | 'QUEUED' | 'PROCESSING' | 'FAILED';
@@ -41,6 +43,9 @@ const SEED_ORDERS: ManagedOrder[] = [
     whatsapp: '012984521',
     priceIdr: 26400,
     priceUsd: 1.65,
+    costUsd: 1.48,
+    profitUsd: 0.17,
+    feeUsd: 0,
     paymentMethod: 'KHQR (Bakong / គ្រប់ធនាគារ)',
     status: 'COMPLETED',
     createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 mins ago
@@ -61,6 +66,9 @@ const SEED_ORDERS: ManagedOrder[] = [
     whatsapp: '098765432',
     priceIdr: 20800,
     priceUsd: 1.30,
+    costUsd: 1.17,
+    profitUsd: 0.13,
+    feeUsd: 0,
     paymentMethod: 'KHQR (Bakong / គ្រប់ធនាគារ)',
     status: 'COMPLETED',
     createdAt: new Date(Date.now() - 1000 * 60 * 18).toISOString(), // 18 mins ago
@@ -79,6 +87,9 @@ const SEED_ORDERS: ManagedOrder[] = [
     whatsapp: '088712345',
     priceIdr: 49600,
     priceUsd: 3.10,
+    costUsd: 2.79,
+    profitUsd: 0.31,
+    feeUsd: 0,
     paymentMethod: 'KHQR (Bakong / គ្រប់ធនាគារ)',
     status: 'QUEUED',
     createdAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(), // 45 mins ago
@@ -98,6 +109,9 @@ const SEED_ORDERS: ManagedOrder[] = [
     whatsapp: '010293847',
     priceIdr: 82400,
     priceUsd: 5.15,
+    costUsd: 4.63,
+    profitUsd: 0.52,
+    feeUsd: 0,
     paymentMethod: 'KHQR (Bakong / គ្រប់ធនាគារ)',
     status: 'COMPLETED',
     createdAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(), // 2 hours ago
@@ -118,6 +132,9 @@ const SEED_ORDERS: ManagedOrder[] = [
     whatsapp: '077889900',
     priceIdr: 40800,
     priceUsd: 2.55,
+    costUsd: 2.29,
+    profitUsd: 0.26,
+    feeUsd: 0,
     paymentMethod: 'KHQR (Bakong / គ្រប់ធនាគារ)',
     status: 'COMPLETED',
     createdAt: new Date(Date.now() - 1000 * 60 * 180).toISOString(), // 3 hours ago
@@ -155,6 +172,10 @@ class OrderService {
   }
 
   public addOrder(orderData: Partial<ManagedOrder>): ManagedOrder {
+    const finalPriceUsd = orderData.priceUsd || (orderData.priceIdr ? orderData.priceIdr / 16000 : 1.30);
+    const finalCostUsd = orderData.costUsd ?? Number((finalPriceUsd * 0.90).toFixed(2));
+    const finalProfitUsd = orderData.profitUsd ?? Number((finalPriceUsd - finalCostUsd).toFixed(2));
+
     const newOrder: ManagedOrder = {
       id: orderData.id || 'AURA-' + Math.floor(100000 + Math.random() * 900000),
       gameId: orderData.gameId || 'general',
@@ -168,7 +189,9 @@ class OrderService {
       server: orderData.server,
       whatsapp: orderData.whatsapp,
       priceIdr: orderData.priceIdr || 20800,
-      priceUsd: orderData.priceUsd || (orderData.priceIdr ? orderData.priceIdr / 16000 : 1.30),
+      priceUsd: finalPriceUsd,
+      costUsd: finalCostUsd,
+      profitUsd: finalProfitUsd,
       feeUsd: orderData.feeUsd ?? 0,
       paymentMethod: orderData.paymentMethod || 'KHQR (Bakong)',
       status: orderData.status || 'COMPLETED',

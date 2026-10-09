@@ -12,7 +12,8 @@ import {
   ShoppingBag, 
   Eye, 
   PhoneCall, 
-  X
+  X,
+  TrendingUp
 } from 'lucide-react';
 import { orderService, type ManagedOrder } from '../../services/orderService';
 import { sound } from '../../utils/sound';
@@ -33,6 +34,17 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
   // KPIs
   const totalRevenueUsd = orders.reduce((sum, o) => sum + (o.priceUsd || 0), 0);
   const totalRevenueKhr = Math.round(totalRevenueUsd * 4100);
+
+  // Net Profit (ប្រាក់ចំណេញសុទ្ធ)
+  const totalProfitUsd = orders.reduce((sum, o) => {
+    const cost = o.costUsd ?? Number((o.priceUsd * 0.90).toFixed(2));
+    const profit = o.profitUsd ?? Number((o.priceUsd - cost).toFixed(2));
+    return sum + (o.status === 'COMPLETED' ? profit : 0);
+  }, 0);
+  const totalProfitKhr = Math.round(totalProfitUsd * 4100);
+  const completedRevenueUsd = orders.filter((o) => o.status === 'COMPLETED').reduce((sum, o) => sum + (o.priceUsd || 0), 0);
+  const profitMargin = completedRevenueUsd > 0 ? ((totalProfitUsd / completedRevenueUsd) * 100).toFixed(1) : '10.5';
+
   const completedOrders = orders.filter((o) => o.status === 'COMPLETED').length;
   const queuedOrders = orders.filter((o) => o.status === 'QUEUED').length;
 
@@ -141,7 +153,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
       )}
 
       {/* KPI Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         {/* Card 1: Total Revenue */}
         <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden group shadow-xl">
           <div className="flex items-center justify-between mb-2">
@@ -158,7 +170,26 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
           </div>
         </div>
 
-        {/* Card 2: Total Orders */}
+        {/* Card 2: Net Profit (ប្រាក់ចំណេញសុទ្ធ) */}
+        <div className="admin-card rounded-2xl p-4 sm:p-5 border border-emerald-500/30 bg-[#0d1326] text-white relative overflow-hidden group shadow-xl ring-1 ring-emerald-500/20">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-emerald-400 font-tech uppercase tracking-wider font-bold">ប្រាក់ចំណេញ (Profit)</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="font-display font-black text-xl sm:text-2xl text-emerald-400">
+            +${totalProfitUsd.toFixed(2)}
+          </div>
+          <div className="text-[11px] text-emerald-300 font-mono mt-0.5 flex items-center justify-between">
+            <span>~{totalProfitKhr.toLocaleString('en-US')} ៛</span>
+            <span className="text-[10px] bg-emerald-500/20 px-1.5 py-0.5 rounded font-bold font-tech text-emerald-300">
+              {profitMargin}% Margin
+            </span>
+          </div>
+        </div>
+
+        {/* Card 3: Total Orders */}
         <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-400 font-tech uppercase tracking-wider">ការបញ្ជាទិញសរុប</span>
@@ -174,7 +205,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
           </div>
         </div>
 
-        {/* Card 3: Completed Orders */}
+        {/* Card 4: Completed Orders */}
         <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-400 font-tech uppercase tracking-wider">ជោគជ័យ (Delivered)</span>
@@ -190,8 +221,8 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
           </div>
         </div>
 
-        {/* Card 4: Queued Orders */}
-        <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden shadow-xl">
+        {/* Card 5: Queued Orders */}
+        <div className="admin-card rounded-2xl p-4 sm:p-5 border border-white/10 bg-[#0d1326] text-white relative overflow-hidden shadow-xl col-span-2 sm:col-span-1">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-400 font-tech uppercase tracking-wider">កំពុងរង់ចាំ (Queued)</span>
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
@@ -267,7 +298,8 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
                 <th className="py-3 px-4">Order ID & ពេលវេលា</th>
                 <th className="py-3 px-4">ហ្គេម & កញ្ចប់ពេជ្រ</th>
                 <th className="py-3 px-4">គណនីអ្នកលេង (Account)</th>
-                <th className="py-3 px-4">តម្លៃ & សេវា (Price & Fee)</th>
+                <th className="py-3 px-4">តម្លៃលក់ (Price)</th>
+                <th className="py-3 px-4">ប្រាក់ចំណេញ (Profit)</th>
                 <th className="py-3 px-4">ស្ថានភាព (Status)</th>
                 <th className="py-3 px-4 text-right">សកម្មភាព (Actions)</th>
               </tr>
@@ -275,7 +307,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
             <tbody className="divide-y divide-white/5 text-xs text-slate-300">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-500">
+                  <td colSpan={7} className="py-12 text-center text-slate-500">
                     <ShoppingBag className="w-10 h-10 mx-auto mb-2 text-slate-600 opacity-50" />
                     <p className="font-semibold text-sm text-slate-400">មិនមានទិន្នន័យការបញ្ជាទិញឡើយ</p>
                     <p className="text-xs text-slate-500 mt-1">គ្មានការបញ្ជាទិញត្រូវនឹងការស្វែងរកនេះទេ</p>
@@ -351,7 +383,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
                       </div>
                     </td>
 
-                    {/* Price & Fee */}
+                    {/* Price & Cost */}
                     <td className="py-3.5 px-4">
                       <div className="font-mono font-bold text-white text-sm">
                         ${order.priceUsd.toFixed(2)}
@@ -359,9 +391,32 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
                       <div className="text-[11px] text-slate-400 font-mono">
                         ~{Math.round(order.priceUsd * 4100).toLocaleString()} ៛
                       </div>
-                      <div className="text-[10px] text-emerald-400 font-mono font-bold mt-1 inline-flex items-center gap-1 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
-                        <span>Fee: ${(order.feeUsd ?? 0).toFixed(2)} (0%)</span>
+                      <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                        ដើម: ${(order.costUsd ?? Number((order.priceUsd * 0.90).toFixed(2))).toFixed(2)}
                       </div>
+                    </td>
+
+                    {/* Net Profit */}
+                    <td className="py-3.5 px-4">
+                      {(() => {
+                        const cost = order.costUsd ?? Number((order.priceUsd * 0.90).toFixed(2));
+                        const profit = order.profitUsd ?? Number((order.priceUsd - cost).toFixed(2));
+                        const profitKhr = Math.round(profit * 4100);
+                        const margin = order.priceUsd > 0 ? ((profit / order.priceUsd) * 100).toFixed(1) : '10.0';
+                        return (
+                          <div>
+                            <div className="font-mono font-black text-emerald-400 text-sm flex items-center gap-1">
+                              <span>+${profit.toFixed(2)}</span>
+                            </div>
+                            <div className="text-[10px] text-emerald-300/80 font-mono">
+                              +{profitKhr.toLocaleString()} ៛
+                            </div>
+                            <div className="text-[9px] font-mono text-emerald-300 font-bold mt-0.5 inline-flex items-center px-1.5 py-0.2 rounded bg-emerald-500/15 border border-emerald-500/30">
+                              {margin}% margin
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </td>
 
                     {/* Status */}
@@ -483,12 +538,32 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
               </div>
               <div className="flex justify-between items-center py-1 border-b border-white/5">
                 <span className="text-slate-400">សេវាទូទាត់ (Payment Fee)៖</span>
-                <span className="font-mono font-bold text-emerald-400">
+                <span className="font-mono font-bold text-slate-300">
                   ${(selectedOrder.feeUsd ?? 0).toFixed(2)} (0% Free)
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-slate-400">តម្លៃទូទាត់សរុប (Total)៖</span>
+                <span className="text-slate-400">ថ្លៃដើមទិញពី MooGold (Cost)៖</span>
+                <span className="font-mono font-bold text-amber-300">
+                  ${(selectedOrder.costUsd ?? Number((selectedOrder.priceUsd * 0.90).toFixed(2))).toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-white/5 bg-emerald-500/10 px-2.5 rounded-xl border border-emerald-500/20">
+                <span className="text-emerald-300 font-bold flex items-center gap-1.5">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>ប្រាក់ចំណេញសុទ្ធ (Net Profit)៖</span>
+                </span>
+                <span className="font-mono font-black text-emerald-400 text-sm">
+                  {(() => {
+                    const cost = selectedOrder.costUsd ?? Number((selectedOrder.priceUsd * 0.90).toFixed(2));
+                    const profit = selectedOrder.profitUsd ?? Number((selectedOrder.priceUsd - cost).toFixed(2));
+                    const profitKhr = Math.round(profit * 4100);
+                    return `+$${profit.toFixed(2)} (~${profitKhr.toLocaleString()} ៛)`;
+                  })()}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1 border-b border-white/5">
+                <span className="text-slate-400">តម្លៃលក់សរុប (Customer Paid)៖</span>
                 <span className="font-mono font-black text-cyan-400 text-sm">
                   ${selectedOrder.priceUsd.toFixed(2)} (~{Math.round(selectedOrder.priceUsd * 4100).toLocaleString()} ៛)
                 </span>
