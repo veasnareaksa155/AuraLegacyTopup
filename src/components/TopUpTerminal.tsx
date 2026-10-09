@@ -789,7 +789,7 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
                   <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[#e11927] text-white text-[8px] sm:text-[9px] font-black tracking-tight leading-none flex-shrink-0 shadow-xs">
                     KHQR
                   </span>
-                  <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-[9px] font-bold flex-shrink-0">
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-extrabold uppercase font-tech flex-shrink-0 border border-emerald-500/20">
                     0% Fee
                   </span>
                 </div>
@@ -798,6 +798,9 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
                 <div className="flex items-center gap-1.5 sm:gap-2 mt-0.5 sm:mt-1">
                   <span className="font-display font-black text-lg sm:text-2xl text-cyan-600 dark:text-cyan-400 tracking-tight leading-none">
                     {formatPrice(grandTotal, currency)}
+                  </span>
+                  <span className="hidden xs:inline-flex items-center text-[10px] sm:text-xs text-emerald-600 dark:text-emerald-400 font-mono font-bold">
+                    (Fee: $0.00)
                   </span>
                   <span className="inline-flex items-center gap-0.5 text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-tech">
                     <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-400 fill-amber-400" />

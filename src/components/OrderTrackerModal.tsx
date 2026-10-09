@@ -162,10 +162,10 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ onClose, t
                 </div>
 
                 {/* Details Breakdown */}
-                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-white/10 grid grid-cols-2 gap-2 text-xs text-slate-700 dark:text-slate-300">
+                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-white/10 grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs text-slate-700 dark:text-slate-300">
                   <div>
                     <span className="text-slate-500 dark:text-slate-400">Game:</span>
-                    <p className="font-semibold text-slate-900 dark:text-white">{searchedOrder.gameTitle}</p>
+                    <p className="font-semibold text-slate-900 dark:text-white truncate">{searchedOrder.gameTitle}</p>
                   </div>
                   <div>
                     <span className="text-slate-500 dark:text-slate-400">Nominal:</span>
@@ -176,8 +176,12 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ onClose, t
                     <p className="font-mono text-slate-900 dark:text-white">{searchedOrder.user}</p>
                   </div>
                   <div>
+                    <span className="text-slate-500 dark:text-slate-400">សេវាទូទាត់ (Fee):</span>
+                    <p className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">0% ($0.00)</p>
+                  </div>
+                  <div>
                     <span className="text-slate-500 dark:text-slate-400">Total:</span>
-                    <p className="font-bold text-emerald-600 dark:text-emerald-400">{searchedOrder.total}</p>
+                    <p className="font-black text-cyan-600 dark:text-cyan-400 font-mono">{searchedOrder.total}</p>
                   </div>
                 </div>
               </div>

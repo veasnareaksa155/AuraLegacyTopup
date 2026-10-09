@@ -304,6 +304,9 @@ export const PaymentCheckoutModal: React.FC<CheckoutModalProps> = ({
                 {copiedAmount ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                 <span>{formatPrice(orderData.total, currency)}</span>
               </button>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-700 text-[10px] font-black font-tech shadow-xs">
+                0% FEE
+              </span>
             </div>
           </div>
         </div>
@@ -336,6 +339,31 @@ export const PaymentCheckoutModal: React.FC<CheckoutModalProps> = ({
           <div className="flex justify-between">
             <span className="text-slate-500 dark:text-slate-400">{t.methodLabel}:</span>
             <span className="font-semibold text-slate-900 dark:text-white">KHQR (Bakong / គ្រប់ធនាគារ)</span>
+          </div>
+
+          {/* Price & Fee Breakdown */}
+          <div className="pt-2 mt-2 border-t border-slate-200/80 dark:border-white/10 space-y-1.5 font-tech">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 dark:text-slate-400">តម្លៃទំនិញ (Item Price):</span>
+              <span className="font-mono text-slate-800 dark:text-slate-200">
+                {formatPrice(orderData.basePrice || orderData.total, currency)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 dark:text-slate-400">សេវាទូទាត់ (Payment Fee):</span>
+              <span className="inline-flex items-center gap-1 font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px]">
+                  0% FREE
+                </span>
+                <span>$0.00 (0 ៛)</span>
+              </span>
+            </div>
+            <div className="flex justify-between items-center pt-1.5 border-t border-dashed border-slate-200 dark:border-white/10">
+              <span className="font-bold text-slate-900 dark:text-white">សរុបត្រូវបង់ (Total To Pay):</span>
+              <span className="font-mono font-black text-sm text-cyan-600 dark:text-cyan-400">
+                {formatPrice(orderData.total, currency)}
+              </span>
+            </div>
           </div>
         </div>
 

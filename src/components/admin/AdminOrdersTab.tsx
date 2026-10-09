@@ -267,7 +267,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
                 <th className="py-3 px-4">Order ID & ពេលវេលា</th>
                 <th className="py-3 px-4">ហ្គេម & កញ្ចប់ពេជ្រ</th>
                 <th className="py-3 px-4">គណនីអ្នកលេង (Account)</th>
-                <th className="py-3 px-4">តម្លៃ (Price)</th>
+                <th className="py-3 px-4">តម្លៃ & សេវា (Price & Fee)</th>
                 <th className="py-3 px-4">ស្ថានភាព (Status)</th>
                 <th className="py-3 px-4 text-right">សកម្មភាព (Actions)</th>
               </tr>
@@ -351,13 +351,16 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
                       </div>
                     </td>
 
-                    {/* Price */}
+                    {/* Price & Fee */}
                     <td className="py-3.5 px-4">
                       <div className="font-mono font-bold text-white text-sm">
                         ${order.priceUsd.toFixed(2)}
                       </div>
                       <div className="text-[11px] text-slate-400 font-mono">
                         ~{Math.round(order.priceUsd * 4100).toLocaleString()} ៛
+                      </div>
+                      <div className="text-[10px] text-emerald-400 font-mono font-bold mt-1 inline-flex items-center gap-1 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                        <span>Fee: ${(order.feeUsd ?? 0).toFixed(2)} (0%)</span>
                       </div>
                     </td>
 
@@ -479,7 +482,13 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
                 <span className="font-semibold text-white">{selectedOrder.paymentMethod}</span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-slate-400">តម្លៃទូទាត់៖</span>
+                <span className="text-slate-400">សេវាទូទាត់ (Payment Fee)៖</span>
+                <span className="font-mono font-bold text-emerald-400">
+                  ${(selectedOrder.feeUsd ?? 0).toFixed(2)} (0% Free)
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1 border-b border-white/5">
+                <span className="text-slate-400">តម្លៃទូទាត់សរុប (Total)៖</span>
                 <span className="font-mono font-black text-cyan-400 text-sm">
                   ${selectedOrder.priceUsd.toFixed(2)} (~{Math.round(selectedOrder.priceUsd * 4100).toLocaleString()} ៛)
                 </span>

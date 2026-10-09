@@ -406,6 +406,19 @@ export const AdminCatalogTab: React.FC<AdminCatalogTabProps> = ({ games, onCatal
                         </span>
                       </div>
 
+                      {/* Payment Fee Display */}
+                      <div className="flex-1 sm:flex-initial">
+                        <label className="block text-[10px] font-tech text-cyan-400 uppercase font-bold">
+                          សេវាទូទាត់ (Fee)
+                        </label>
+                        <div className="mt-0.5 px-2 py-1.5 rounded-lg bg-[#080c1d] border border-white/15 text-xs font-mono text-emerald-400 font-bold flex items-center justify-center">
+                          0% ($0.00)
+                        </div>
+                        <span className="text-[10px] text-slate-500 font-mono block mt-0.5">
+                          KHQR Free
+                        </span>
+                      </div>
+
                       {/* Popular Toggle & Delete */}
                       <div className="flex items-center gap-1.5 pt-4">
                         <button

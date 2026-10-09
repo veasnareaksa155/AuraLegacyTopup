@@ -16,6 +16,7 @@ export interface ManagedOrder {
   whatsapp?: string;
   priceIdr: number;
   priceUsd: number;
+  feeUsd?: number;
   paymentMethod: string;
   status: 'COMPLETED' | 'QUEUED' | 'PROCESSING' | 'FAILED';
   createdAt: string;
@@ -168,6 +169,7 @@ class OrderService {
       whatsapp: orderData.whatsapp,
       priceIdr: orderData.priceIdr || 20800,
       priceUsd: orderData.priceUsd || (orderData.priceIdr ? orderData.priceIdr / 16000 : 1.30),
+      feeUsd: orderData.feeUsd ?? 0,
       paymentMethod: orderData.paymentMethod || 'KHQR (Bakong)',
       status: orderData.status || 'COMPLETED',
       createdAt: orderData.createdAt || new Date().toISOString(),

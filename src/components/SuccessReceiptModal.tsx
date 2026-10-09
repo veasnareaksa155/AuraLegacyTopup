@@ -160,6 +160,14 @@ export const SuccessReceiptModal: React.FC<SuccessReceiptModalProps> = ({
             <span className="text-slate-500 dark:text-slate-400">{formatDate(receipt.paidAt)}</span>
           </div>
 
+          <div className="flex items-center justify-between">
+            <span className="text-slate-500 dark:text-slate-400">សេវាទូទាត់ (Payment Fee):</span>
+            <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold font-mono text-xs">
+              <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 text-[10px] font-tech">0% FREE</span>
+              <span>$0.00 (0 ៛)</span>
+            </span>
+          </div>
+
           <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-white/10">
             <span className="text-slate-500 dark:text-slate-400">{t.totalPaid}:</span>
             <span className="font-display font-black text-lg text-emerald-600 dark:text-emerald-400">
