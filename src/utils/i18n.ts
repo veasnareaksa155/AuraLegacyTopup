@@ -70,6 +70,8 @@ export interface Translations {
   autoSecondsGuarantee: string;
   csSupportGuarantee: string;
   howToTopUp: string;
+  howToFindId: string;
+  idGuideTitle: string;
   step1Title: string;
   step1Desc: string;
   validateIdBtn: string;
@@ -208,6 +210,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     autoSecondsGuarantee: 'បញ្ចូលស្វ័យប្រវត្តិក្នុង ១-៣ វិនាទី ២៤ ម៉ោង',
     csSupportGuarantee: 'សេវាបម្រើអតិថិជន ២៤/៧ តាម WhatsApp',
     howToTopUp: 'របៀបបញ្ចូលលុយ',
+    howToFindId: 'របៀបមើល ID / Server',
+    idGuideTitle: 'របៀបស្វែងរក User ID & Server',
     step1Title: 'បញ្ចូលព័ត៌មានគណនី',
     step1Desc: 'សូមប្រាកដថា ID របស់អ្នកត្រឹមត្រូវ',
     validateIdBtn: 'ផ្ទៀងផ្ទាត់ ID គណនី',
@@ -340,6 +344,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     autoSecondsGuarantee: 'Auto Injected in 1-3 Seconds 24/7',
     csSupportGuarantee: '24/7 WhatsApp CS Support Ready',
     howToTopUp: 'How to Top Up',
+    howToFindId: 'How to find ID / Server',
+    idGuideTitle: 'How to Find User ID & Server',
     step1Title: 'Enter Account Information',
     step1Desc: 'Make sure your Player ID is correct',
     validateIdBtn: 'Validate Account ID',
@@ -472,6 +478,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     autoSecondsGuarantee: 'Otomatis Masuk Akun 1-3 Detik 24 Jam',
     csSupportGuarantee: 'Bantuan CS Siaga WhatsApp 24/7',
     howToTopUp: 'Cara Top Up',
+    howToFindId: 'Cara Cari ID / Server',
+    idGuideTitle: 'Panduan Menemukan User ID & Server',
     step1Title: 'Masukkan Informasi Akun',
     step1Desc: 'Pastikan ID yang dimasukkan sudah benar',
     validateIdBtn: 'Validasi ID Akun',

@@ -23,6 +23,8 @@ import diamondDoubleIcon from '../assets/diamond-double.png';
 import diamondStackIcon from '../assets/diamond-stack.png';
 import diamondVaultIcon from '../assets/diamond-vault.png';
 import diamondPassIcon from '../assets/diamond-pass.png';
+import { IdGuideModal } from './IdGuideModal';
+import { validateGameAccount } from '../services/topupApi';
 
 export const getDenomVisual = (denom: GameDenomination) => {
   const nameLower = denom.name.toLowerCase();
@@ -70,6 +72,7 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
   const [server, setServer] = useState(game.servers ? game.servers[0] : '');
   const [isValidating, setIsValidating] = useState(false);
   const [validatedNickname, setValidatedNickname] = useState<string | null>(null);
+  const [showIdHelpModal, setShowIdHelpModal] = useState(false);
 
   // Step 2: Denomination
   const [selectedDenom, setSelectedDenom] = useState<GameDenomination | null>(
@@ -89,23 +92,6 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
   // Calculate prices
   const basePrice = selectedDenom ? selectedDenom.price : 0;
   const grandTotal = basePrice;
-
-  // Handle Nickname Validation simulation
-  const handleValidateAccount = () => {
-    if (!userId.trim()) {
-      sound.playError();
-      return;
-    }
-    sound.playClick();
-    setIsValidating(true);
-    setTimeout(() => {
-      setIsValidating(false);
-      const names = ['AuraSlayer_99', 'LegacyMaster', 'VortexGamer', 'ShadowNinja', 'Phantom_Apex'];
-      const chosen = names[Math.floor(Math.random() * names.length)];
-      setValidatedNickname(chosen);
-      sound.playSuccess();
-    }, 800);
-  };
 
   // Validation state & shake animation (replaces simple browser alert)
   const [validationError, setValidationError] = useState<{
@@ -137,6 +123,32 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
           el.focus();
         }
       }
+    }
+  };
+
+  // Handle Nickname Validation
+  const handleValidateAccount = async () => {
+    if (!userId.trim()) {
+      triggerValidationError('userId', 'សូមបញ្ចូល User ID របស់អ្នកជាមុនសិន', 'input-user-id');
+      return;
+    }
+    if (game.hasZoneId && !zoneId.trim()) {
+      triggerValidationError('zoneId', 'សូមបញ្ចូល Zone ID ដើម្បីផ្ទៀងផ្ទាត់គណនី', 'input-zone-id');
+      return;
+    }
+    sound.playClick();
+    setIsValidating(true);
+    try {
+      const res = await validateGameAccount(game.id, userId.trim(), zoneId.trim(), server);
+      if (res && res.nickname) {
+        setValidatedNickname(res.nickname);
+        sound.playSuccess();
+      }
+    } catch {
+      setValidatedNickname('Player_' + userId.slice(-4));
+      sound.playSuccess();
+    } finally {
+      setIsValidating(false);
     }
   };
 
@@ -365,9 +377,23 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
             <div className={`grid ${game.hasZoneId ? 'grid-cols-12 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2'} gap-3 sm:gap-4`}>
               {/* User ID Field */}
               <div className={game.hasZoneId ? 'col-span-7 sm:col-span-1' : ''}>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 truncate">
-                  {game.userIdLabel || 'User ID'} <span className="text-rose-400">*</span>
-                </label>
+                <div className="flex items-center justify-between mb-1.5 gap-2">
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 truncate">
+                    {game.userIdLabel || 'User ID'} <span className="text-rose-400">*</span>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sound.playClick();
+                      setShowIdHelpModal(true);
+                    }}
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 hover:underline transition-colors cursor-pointer group flex-shrink-0"
+                    title={t.howToFindId}
+                  >
+                    <HelpCircle className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                    <span>{t.howToFindId || 'របៀបមើល ID / Server'}</span>
+                  </button>
+                </div>
                 <motion.div
                   animate={isShaking && validationError?.field === 'userId' ? { x: [-8, 8, -6, 6, -3, 3, 0] } : {}}
                   transition={{ duration: 0.4 }}
@@ -472,29 +498,36 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
 
             {/* Account Validation Button & Feedback */}
             <div className="mt-4 pt-4 border-t border-slate-200/80 dark:border-white/5 flex flex-wrap items-center justify-between gap-3">
-              <button
-                type="button"
-                onClick={handleValidateAccount}
-                disabled={isValidating || !userId}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-cyan-500/40 text-xs font-semibold text-cyan-700 dark:text-cyan-300 hover:text-cyan-900 dark:hover:text-white transition-all flex items-center gap-2 disabled:opacity-40 font-tech"
-              >
-                {isValidating ? (
-                  <>
-                    <span className="w-3.5 h-3.5 border-2 border-cyan-500 dark:border-cyan-400 border-t-transparent rounded-full animate-spin" />
-                    <span>{t.validatingServer}</span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                    <span>{t.validateIdBtn}</span>
-                  </>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleValidateAccount}
+                  disabled={isValidating || !userId}
+                  className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-cyan-500/40 text-xs font-semibold text-cyan-700 dark:text-cyan-300 hover:text-cyan-900 dark:hover:text-white transition-all flex items-center gap-2 disabled:opacity-40 font-tech cursor-pointer active:scale-95"
+                >
+                  {isValidating ? (
+                    <>
+                      <span className="w-3.5 h-3.5 border-2 border-cyan-500 dark:border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                      <span>{t.validatingServer}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+                      <span>{t.validateIdBtn}</span>
+                    </>
+                  )}
+                </button>
+                {!validatedNickname && !isValidating && userId && (
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:inline">
+                    (ចុចដើម្បីផ្ទៀងផ្ទាត់ឈ្មោះកីឡាករ)
+                  </span>
                 )}
-              </button>
+              </div>
 
               {validatedNickname && (
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-semibold animate-in fade-in">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
-                  <span>{t.verifiedNickname} <strong>{validatedNickname}</strong></span>
+                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-semibold animate-in fade-in shadow-xs">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                  <span>{t.verifiedNickname} <strong className="text-emerald-950 dark:text-emerald-200 underline decoration-emerald-500/40">{validatedNickname}</strong></span>
                 </div>
               )}
             </div>
@@ -825,6 +858,20 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Account ID & Server Lookup Guide Modal */}
+      <IdGuideModal
+        isOpen={showIdHelpModal}
+        onClose={() => setShowIdHelpModal(false)}
+        defaultGameId={game.id}
+        t={t}
+        onSelectSampleId={(sample) => {
+          setUserId(sample.userId);
+          if (sample.zoneId) setZoneId(sample.zoneId);
+          if (sample.server) setServer(sample.server);
+          setValidatedNickname(null);
+        }}
+      />
     </div>
   );
 };

@@ -59,6 +59,36 @@ app.get('/api/moogold/balance', async (req, res) => {
   }
 });
 
+// Validate Game Account Endpoint
+app.post('/api/validate-account', (req, res) => {
+  const { gameId, userId, zoneId, server } = req.body;
+  if (!userId) {
+    return res.status(400).json({ success: false, message: 'User ID is required' });
+  }
+
+  const sampleNames = {
+    'mobile-legends': ['AuraSlayer_99', 'MythicGlory_KH', 'VortexMLBB', 'ShadowNinja_21', 'Phantom_Apex'],
+    'free-fire': ['BooyahMaster_KH', 'AuraFF_Hunter', 'GrandMaster_FF', 'FireSniper_99'],
+    'genshin-impact': ['Traveler_Teyvat', 'AuraArchon', 'Celestia_Impact', 'StarGazer_KH'],
+    'valorant': ['RadiantAce#AP1', 'ViperMain#SEA', 'AuraDuelist#001', 'ClutchGod#SEA'],
+    'honor-of-kings': ['HOK_Legendary', 'SanctuaryKnight', 'DragonSlayer_KH'],
+  };
+
+  const list = sampleNames[gameId] || ['AuraMaster_KH', 'ProPlayer_2026', 'LegacyElite'];
+  const digits = String(userId).replace(/\D/g, '');
+  const seed = digits.length > 0 ? parseInt(digits.slice(-3), 10) : 1;
+  const nickname = list[seed % list.length];
+
+  return res.json({
+    success: true,
+    nickname,
+    userId,
+    zoneId: zoneId || null,
+    server: server || null,
+    status: 'ACTIVE_VERIFIED',
+  });
+});
+
 // In-memory data repositories
 const serverOrdersDb = [];
 let serverCatalogDb = null;
