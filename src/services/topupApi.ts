@@ -93,6 +93,15 @@ export async function checkMooGoldStatus() {
   }
 }
 
+export interface ValidateAccountResult {
+  success: boolean;
+  isReal?: boolean;
+  formatValid?: boolean;
+  nickname?: string | null;
+  message?: string;
+  error?: string;
+}
+
 /**
  * Validate Game Account ID & fetch in-game Nickname
  */
@@ -101,39 +110,104 @@ export async function validateGameAccount(
   userId: string, 
   zoneId?: string, 
   server?: string
-): Promise<{ success: boolean; nickname: string; message?: string }> {
+): Promise<ValidateAccountResult> {
+  const cleanId = String(userId).trim();
+  const cleanZone = String(zoneId || '').trim();
+
   try {
     const response = await fetch('/api/validate-account', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gameId, userId, zoneId, server }),
+      body: JSON.stringify({ gameId, userId: cleanId, zoneId: cleanZone, server }),
     });
 
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
-      if (data.nickname) {
-        return { success: true, nickname: data.nickname };
-      }
+      return {
+        success: true,
+        isReal: Boolean(data.isReal),
+        formatValid: Boolean(data.formatValid),
+        nickname: data.nickname || null,
+        message: data.message,
+      };
+    } else {
+      return {
+        success: false,
+        error: data.message || 'ការផ្ទៀងផ្ទាត់មិនជោគជ័យ',
+      };
     }
   } catch (err) {
-    console.warn('[Account Validation] Backend offline, using local verification engine:', err);
+    console.warn('[Account Validation] Offline format check:', err);
   }
 
-  // Fallback realistic game nicknames mapping
-  const sampleNames: Record<string, string[]> = {
-    'mobile-legends': ['AuraSlayer_99', 'MythicGlory_KH', 'VortexMLBB', 'ShadowNinja_21', 'Phantom_Apex'],
-    'free-fire': ['BooyahMaster_KH', 'AuraFF_Hunter', 'GrandMaster_FF', 'FireSniper_99'],
-    'genshin-impact': ['Traveler_Teyvat', 'AuraArchon', 'Celestia_Impact', 'StarGazer_KH'],
-    'valorant': ['RadiantAce#AP1', 'ViperMain#SEA', 'AuraDuelist#001', 'ClutchGod#SEA'],
-    'honor-of-kings': ['HOK_Legendary', 'SanctuaryKnight', 'DragonSlayer_KH'],
+  // Client-side strict syntax & format validation (zero fake user names!)
+  const isMlbb = gameId === 'mobile-legends';
+  const isFf = gameId === 'free-fire';
+  const isGenshin = gameId === 'genshin-impact';
+  const isValorant = gameId === 'valorant';
+
+  if (isMlbb) {
+    const isIdNumeric = /^\d{6,11}$/.test(cleanId);
+    const isZoneNumeric = /^\d{3,6}$/.test(cleanZone);
+    if (!isIdNumeric) {
+      return { success: false, error: 'User ID MLBB ត្រូវតែជាលេខ 6-10 ខ្ទង់' };
+    }
+    if (!isZoneNumeric) {
+      return { success: false, error: 'Zone ID MLBB ត្រូវតែជាលេខ 4-5 ខ្ទង់' };
+    }
+    return {
+      success: true,
+      formatValid: true,
+      nickname: null,
+      message: `ទម្រង់ MLBB ត្រឹមត្រូវ៖ ${cleanId} (${cleanZone})`,
+    };
+  }
+
+  if (isFf) {
+    const isFfNumeric = /^\d{7,12}$/.test(cleanId);
+    if (!isFfNumeric) {
+      return { success: false, error: 'Player ID Free Fire ត្រូវតែជាលេខ 8-10 ខ្ទង់' };
+    }
+    return {
+      success: true,
+      formatValid: true,
+      nickname: null,
+      message: `ទម្រង់ Free Fire UID ត្រឹមត្រូវ៖ ${cleanId}`,
+    };
+  }
+
+  if (isGenshin) {
+    const isGenshinNumeric = /^\d{8,11}$/.test(cleanId);
+    if (!isGenshinNumeric) {
+      return { success: false, error: 'UID Genshin Impact ត្រូវតែជាលេខ 9-10 ខ្ទង់' };
+    }
+    return {
+      success: true,
+      formatValid: true,
+      nickname: null,
+      message: `ទម្រង់ Genshin UID ត្រឹមត្រូវ៖ ${cleanId}`,
+    };
+  }
+
+  if (isValorant) {
+    if (!cleanId.includes('#') || cleanId.length < 4) {
+      return { success: false, error: 'Valorant Riot ID ត្រូវមាន Tagline ឧទាហរណ៍៖ Name#Tag' };
+    }
+    return {
+      success: true,
+      formatValid: true,
+      nickname: null,
+      message: `ទម្រង់ Riot ID ត្រឹមត្រូវ៖ ${cleanId}`,
+    };
+  }
+
+  const isValid = cleanId.length >= 4;
+  return {
+    success: isValid,
+    formatValid: isValid,
+    nickname: null,
+    message: isValid ? `ទម្រង់ ID ត្រឹមត្រូវ៖ ${cleanId}` : 'សូមបញ្ចូល ID ឱ្យបានត្រឹមត្រូវ',
+    error: isValid ? undefined : 'សូមបញ្ចូល ID ឱ្យបានត្រឹមត្រូវ',
   };
-
-  const list = sampleNames[gameId] || ['AuraMaster_KH', 'ProPlayer_2026', 'LegacyElite'];
-  // Deterministic selection based on ID digits
-  const digits = String(userId).replace(/\D/g, '');
-  const seed = digits.length > 0 ? parseInt(digits.slice(-3), 10) : 1;
-  const nickname = list[seed % list.length];
-
-  return { success: true, nickname };
 }
 

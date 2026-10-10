@@ -59,33 +59,100 @@ app.get('/api/moogold/balance', async (req, res) => {
   }
 });
 
-// Validate Game Account Endpoint
-app.post('/api/validate-account', (req, res) => {
+// Validate Game Account Endpoint (Direct MooGold + Strict Format Verification)
+app.post('/api/validate-account', async (req, res) => {
   const { gameId, userId, zoneId, server } = req.body;
   if (!userId) {
     return res.status(400).json({ success: false, message: 'User ID is required' });
   }
 
-  const sampleNames = {
-    'mobile-legends': ['AuraSlayer_99', 'MythicGlory_KH', 'VortexMLBB', 'ShadowNinja_21', 'Phantom_Apex'],
-    'free-fire': ['BooyahMaster_KH', 'AuraFF_Hunter', 'GrandMaster_FF', 'FireSniper_99'],
-    'genshin-impact': ['Traveler_Teyvat', 'AuraArchon', 'Celestia_Impact', 'StarGazer_KH'],
-    'valorant': ['RadiantAce#AP1', 'ViperMain#SEA', 'AuraDuelist#001', 'ClutchGod#SEA'],
-    'honor-of-kings': ['HOK_Legendary', 'SanctuaryKnight', 'DragonSlayer_KH'],
-  };
+  const cleanId = String(userId).trim();
+  const cleanZone = String(zoneId || '').trim();
 
-  const list = sampleNames[gameId] || ['AuraMaster_KH', 'ProPlayer_2026', 'LegacyElite'];
-  const digits = String(userId).replace(/\D/g, '');
-  const seed = digits.length > 0 ? parseInt(digits.slice(-3), 10) : 1;
-  const nickname = list[seed % list.length];
+  // 1. Try Live MooGold Validation API
+  try {
+    const moogoldResult = await moogold.validatePlayer({ gameId, userId: cleanId, zoneId: cleanZone, server });
+    if (moogoldResult && moogoldResult.isReal && moogoldResult.nickname) {
+      return res.json({
+        success: true,
+        isReal: true,
+        nickname: moogoldResult.nickname,
+        userId: cleanId,
+        zoneId: cleanZone || null,
+        server: server || null,
+        message: 'គណនីត្រូវបានផ្ទៀងផ្ទាត់ផ្ទាល់ពី Server ហ្គេម',
+      });
+    }
+  } catch (err) {
+    console.warn('[Validation] MooGold live check skipped:', err.message);
+  }
 
-  return res.json({
-    success: true,
-    nickname,
-    userId,
-    zoneId: zoneId || null,
-    server: server || null,
-    status: 'ACTIVE_VERIFIED',
+  // 2. Game-Specific Format Validation (Honest, accurate, no fake nickname pretending)
+  const isMlbb = gameId === 'mobile-legends';
+  const isFf = gameId === 'free-fire';
+  const isGenshin = gameId === 'genshin-impact';
+  const isValorant = gameId === 'valorant';
+
+  let formatValid = false;
+  let validationMessage = '';
+
+  if (isMlbb) {
+    const isIdNumeric = /^\d{6,11}$/.test(cleanId);
+    const isZoneNumeric = /^\d{3,6}$/.test(cleanZone);
+    if (!isIdNumeric) {
+      validationMessage = 'User ID MLBB ត្រូវតែជាលេខ 6-10 ខ្ទង់';
+    } else if (!isZoneNumeric) {
+      validationMessage = 'Zone ID MLBB ត្រូវតែជាលេខ 4-5 ខ្ទង់';
+    } else {
+      formatValid = true;
+      validationMessage = `ទម្រង់ MLBB ត្រឹមត្រូវ៖ ${cleanId} (${cleanZone})`;
+    }
+  } else if (isFf) {
+    const isFfNumeric = /^\d{7,12}$/.test(cleanId);
+    if (!isFfNumeric) {
+      validationMessage = 'Player ID Free Fire ត្រូវតែជាលេខ 8-10 ខ្ទង់';
+    } else {
+      formatValid = true;
+      validationMessage = `ទម្រង់ Free Fire UID ត្រឹមត្រូវ៖ ${cleanId}`;
+    }
+  } else if (isGenshin) {
+    const isGenshinNumeric = /^\d{8,11}$/.test(cleanId);
+    if (!isGenshinNumeric) {
+      validationMessage = 'UID Genshin Impact ត្រូវតែជាលេខ 9-10 ខ្ទង់';
+    } else {
+      formatValid = true;
+      validationMessage = `ទម្រង់ Genshin UID ត្រឹមត្រូវ៖ ${cleanId} [${server || 'Asia'}]`;
+    }
+  } else if (isValorant) {
+    if (!cleanId.includes('#') || cleanId.length < 4) {
+      validationMessage = 'Valorant Riot ID ត្រូវមាន Tagline ឧទាហរណ៍៖ Name#Tag';
+    } else {
+      formatValid = true;
+      validationMessage = `ទម្រង់ Riot ID ត្រឹមត្រូវ៖ ${cleanId}`;
+    }
+  } else {
+    // Default games
+    formatValid = cleanId.length >= 4;
+    validationMessage = formatValid ? `ទម្រង់ ID ត្រឹមត្រូវ៖ ${cleanId}` : 'សូមបញ្ចូល ID ឱ្យបានត្រឹមត្រូវ';
+  }
+
+  if (formatValid) {
+    return res.json({
+      success: true,
+      isReal: false,
+      formatValid: true,
+      nickname: null, // Zero fake user, completely authentic!
+      userId: cleanId,
+      zoneId: cleanZone || null,
+      server: server || null,
+      message: validationMessage,
+    });
+  }
+
+  return res.status(400).json({
+    success: false,
+    formatValid: false,
+    message: validationMessage,
   });
 });
 

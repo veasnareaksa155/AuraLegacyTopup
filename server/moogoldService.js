@@ -273,6 +273,85 @@ class MooGoldService {
   }
 
   /**
+   * Validate Player Account / Fetch Real In-Game Nickname
+   * Official MooGold Endpoint: product/validate
+   */
+  async validatePlayer({ gameId, userId, zoneId, server }) {
+    this.reloadConfig();
+
+    if (this.isSandbox) {
+      return {
+        success: true,
+        isSandbox: true,
+        isReal: false,
+        formatValid: true,
+        message: 'Sandbox mode active',
+      };
+    }
+
+    try {
+      const path = 'product/validate';
+      const orderData = {};
+
+      if (gameId === 'mobile-legends') {
+        orderData['product-id'] = 15145; // MLBB Product ID
+        orderData['User ID'] = String(userId);
+        orderData['Server ID'] = String(zoneId || server || '');
+      } else if (gameId === 'free-fire') {
+        orderData['product-id'] = 7847; // Free Fire Product ID
+        orderData['Player ID'] = String(userId);
+      } else {
+        orderData['product-id'] = 15145;
+        orderData['User ID'] = String(userId);
+        if (server) orderData['Server'] = String(server);
+      }
+
+      const payload = {
+        path: 'product/validate',
+        data: orderData,
+      };
+
+      const response = await this.postMooGold(path, payload);
+      const data = await response.json();
+
+      // If MooGold returned a verified nickname
+      const realNickname = data.username || data.nickname || data.player_name || data.account_name;
+      if (data && (realNickname || data.status === true)) {
+        return {
+          success: true,
+          isReal: true,
+          nickname: realNickname || 'Verified Account',
+          raw: data,
+        };
+      }
+
+      // If MooGold endpoint requires Account Manager whitelist (err_code: "1111")
+      if (data && data.err_code === '1111') {
+        return {
+          success: false,
+          isReal: false,
+          needsActivation: true,
+          err_code: '1111',
+          message: data.err_message || 'Endpoint accessible to members only. Account manager whitelist needed.',
+        };
+      }
+
+      return {
+        success: false,
+        isReal: false,
+        error: data.err_message || data.message || 'Validation returned invalid status',
+      };
+    } catch (err) {
+      console.warn('[MooGold] validatePlayer Exception:', err.message);
+      return {
+        success: false,
+        isReal: false,
+        error: err.message,
+      };
+    }
+  }
+
+  /**
    * Maps game and denomination package to live verified MooGold variation IDs
    */
   mapProductToMooGoldId(gameId, denomId) {

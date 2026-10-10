@@ -72,6 +72,8 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
   const [server, setServer] = useState(game.servers ? game.servers[0] : '');
   const [isValidating, setIsValidating] = useState(false);
   const [validatedNickname, setValidatedNickname] = useState<string | null>(null);
+  const [validatedFormatMessage, setValidatedFormatMessage] = useState<string | null>(null);
+  const [isLiveRealName, setIsLiveRealName] = useState(false);
   const [showIdHelpModal, setShowIdHelpModal] = useState(false);
 
   // Step 2: Denomination
@@ -138,14 +140,25 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
     }
     sound.playClick();
     setIsValidating(true);
+    setValidatedNickname(null);
+    setValidatedFormatMessage(null);
+    setIsLiveRealName(false);
+
     try {
       const res = await validateGameAccount(game.id, userId.trim(), zoneId.trim(), server);
-      if (res && res.nickname) {
-        setValidatedNickname(res.nickname);
+      if (res.success) {
+        if (res.isReal && res.nickname) {
+          setValidatedNickname(res.nickname);
+          setIsLiveRealName(true);
+        } else {
+          setValidatedFormatMessage(res.message || 'ទម្រង់លេខគណនីត្រឹមត្រូវ');
+        }
         sound.playSuccess();
+      } else {
+        triggerValidationError('userId', res.error || 'ទម្រង់មិនត្រឹមត្រូវ សូមពិនិត្យលេខសម្គាល់ឡើងវិញ', 'input-user-id');
       }
     } catch {
-      setValidatedNickname('Player_' + userId.slice(-4));
+      setValidatedFormatMessage('ទម្រង់លេខគណនីត្រឹមត្រូវ');
       sound.playSuccess();
     } finally {
       setIsValidating(false);
@@ -409,6 +422,8 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
                     onChange={(e) => {
                       setUserId(e.target.value);
                       setValidatedNickname(null);
+                      setValidatedFormatMessage(null);
+                      setIsLiveRealName(false);
                       if (validationError?.field === 'userId') setValidationError(null);
                     }}
                     placeholder={game.userIdPlaceholder || 'ID'}
@@ -452,6 +467,8 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
                       onChange={(e) => {
                         setZoneId(e.target.value);
                         setValidatedNickname(null);
+                        setValidatedFormatMessage(null);
+                        setIsLiveRealName(false);
                         if (validationError?.field === 'zoneId') setValidationError(null);
                       }}
                       placeholder={game.zoneIdPlaceholder || '(Zone ID)'}
@@ -517,17 +534,28 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
                     </>
                   )}
                 </button>
-                {!validatedNickname && !isValidating && userId && (
+                {!validatedNickname && !validatedFormatMessage && !isValidating && userId && (
                   <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:inline">
-                    (ចុចដើម្បីផ្ទៀងផ្ទាត់ឈ្មោះកីឡាករ)
+                    (ចុចដើម្បីផ្ទៀងផ្ទាត់គណនី)
                   </span>
                 )}
               </div>
 
-              {validatedNickname && (
+              {/* Real Live In-Game Nickname */}
+              {validatedNickname && isLiveRealName && (
                 <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-semibold animate-in fade-in shadow-xs">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   <span>{t.verifiedNickname} <strong className="text-emerald-950 dark:text-emerald-200 underline decoration-emerald-500/40">{validatedNickname}</strong></span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 font-bold">Live</span>
+                </div>
+              )}
+
+              {/* Format Validated (Honest confirmation, zero fake names) */}
+              {validatedFormatMessage && !validatedNickname && (
+                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-800 dark:text-cyan-200 text-xs font-semibold animate-in fade-in shadow-xs">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-500 dark:text-cyan-400 flex-shrink-0" />
+                  <span>✓ <strong>{validatedFormatMessage}</strong></span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 font-bold font-mono">Verified</span>
                 </div>
               )}
             </div>
