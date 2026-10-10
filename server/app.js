@@ -86,6 +86,19 @@ app.post('/api/validate-account', async (req, res) => {
           message: `ឈ្មោះកីឡាករពិតប្រាកដ៖ ${freeCheckResult.nickname}`,
         });
       }
+      if (freeCheckResult.success && freeCheckResult.isReal && freeCheckResult.accountExists) {
+        return res.json({
+          success: true,
+          isReal: true,
+          accountExists: true,
+          nickname: null,
+          userId: cleanId,
+          zoneId: cleanZone || null,
+          server: server || null,
+          provider: 'SERVER_VERIFIED',
+          message: `✓ គណនី ${cleanId} មានពិតនៅលើ Server ហ្គេម`,
+        });
+      }
       if (freeCheckResult.invalidId) {
         return res.status(400).json({
           success: false,

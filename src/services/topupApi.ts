@@ -97,6 +97,7 @@ export interface ValidateAccountResult {
   success: boolean;
   isReal?: boolean;
   formatValid?: boolean;
+  accountExists?: boolean;
   nickname?: string | null;
   message?: string;
   error?: string;
@@ -127,6 +128,7 @@ export async function validateGameAccount(
         success: true,
         isReal: Boolean(data.isReal),
         formatValid: Boolean(data.formatValid),
+        accountExists: Boolean(data.accountExists),
         nickname: data.nickname || null,
         message: data.message,
       };

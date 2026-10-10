@@ -74,6 +74,7 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
   const [validatedNickname, setValidatedNickname] = useState<string | null>(null);
   const [validatedFormatMessage, setValidatedFormatMessage] = useState<string | null>(null);
   const [isLiveRealName, setIsLiveRealName] = useState(false);
+  const [customNickname, setCustomNickname] = useState('');
   const [showIdHelpModal, setShowIdHelpModal] = useState(false);
 
   // Step 2: Denomination
@@ -149,7 +150,10 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
       if (res.success) {
         if (res.isReal && res.nickname) {
           setValidatedNickname(res.nickname);
+          setCustomNickname(res.nickname);
           setIsLiveRealName(true);
+        } else if (res.accountExists) {
+          setValidatedFormatMessage(res.message || `✓ គណនី ${userId.trim()} ត្រូវបានបញ្ជាក់ថាមានពិតលើ Server`);
         } else {
           setValidatedFormatMessage(res.message || 'ទម្រង់លេខគណនីត្រឹមត្រូវ');
         }
@@ -189,7 +193,7 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
       userId,
       zoneId: game.hasZoneId ? zoneId : undefined,
       server: game.servers ? server : undefined,
-      nickname: validatedNickname || undefined,
+      nickname: (validatedNickname || customNickname.trim()) || undefined,
       whatsapp: '',
       basePrice,
       discount: 0,
@@ -559,6 +563,59 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
                 </div>
               )}
             </div>
+
+            {/* Player In-Game Nickname Card (Auto-filled from Live Server or Editable) */}
+            <div className="mt-4 pt-3.5 border-t border-slate-200/80 dark:border-white/10">
+              <div className="flex items-center justify-between mb-1.5 gap-2">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <span>ឈ្មោះកីឡាករក្នុងហ្គេម (In-Game Name)</span>
+                  <span className="text-slate-400 font-normal ml-1.5 text-[11px]">
+                    {validatedNickname ? '(ផ្ទៀងផ្ទាត់ផ្ទាល់ពី Server)' : '(ស្រេចចិត្ត / Optional)'}
+                  </span>
+                </label>
+                {validatedNickname && isLiveRealName ? (
+                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1 font-tech">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Live Server Verified
+                  </span>
+                ) : (
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-tech">
+                    បង្ហាញលើវិក្កយបត្រ & Order
+                  </span>
+                )}
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={validatedNickname || customNickname}
+                  onChange={(e) => {
+                    if (!validatedNickname) {
+                      setCustomNickname(e.target.value);
+                    }
+                  }}
+                  readOnly={Boolean(validatedNickname)}
+                  placeholder={
+                    game.id === 'free-fire'
+                      ? 'ឧទាហរណ៍៖ Booyah_Pro, KingFF... (ស្រេចចិត្ត)'
+                      : game.id === 'mobile-legends'
+                      ? 'ឧទាហរណ៍៖ MLBB_Slayer... (ស្រេចចិត្ត)'
+                      : 'បញ្ចូលឈ្មោះកីឡាកររបស់អ្នក (ស្រេចចិត្ត)'
+                  }
+                  className={`w-full px-3.5 sm:px-4 py-2.5 rounded-xl text-sm transition-all shadow-xs ${
+                    validatedNickname && isLiveRealName
+                      ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-950 dark:text-emerald-200 font-bold'
+                      : 'bg-slate-50 dark:glass-input border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500'
+                  }`}
+                />
+                {validatedNickname && isLiveRealName && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500 text-white font-black font-tech shadow-xs">
+                      LIVE
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* STEP 2: Select Denomination */}
@@ -898,6 +955,9 @@ export const TopUpTerminal: React.FC<TopUpTerminalProps> = ({
           if (sample.zoneId) setZoneId(sample.zoneId);
           if (sample.server) setServer(sample.server);
           setValidatedNickname(null);
+          setValidatedFormatMessage(null);
+          setIsLiveRealName(false);
+          setCustomNickname('');
         }}
       />
     </div>

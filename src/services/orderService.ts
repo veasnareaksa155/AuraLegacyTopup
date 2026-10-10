@@ -13,6 +13,7 @@ export interface ManagedOrder {
   userId: string;
   zoneId?: string;
   server?: string;
+  nickname?: string;
   whatsapp?: string;
   priceIdr: number;
   priceUsd: number;
@@ -187,6 +188,7 @@ class OrderService {
       userId: orderData.userId || 'Unknown',
       zoneId: orderData.zoneId,
       server: orderData.server,
+      nickname: orderData.nickname,
       whatsapp: orderData.whatsapp,
       priceIdr: orderData.priceIdr || 20800,
       priceUsd: finalPriceUsd,

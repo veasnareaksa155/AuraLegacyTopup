@@ -56,28 +56,28 @@ const GAME_GUIDES: GameGuideData[] = [
     badge: 'User ID + Zone ID',
     hasZoneId: true,
     hasServer: false,
-    sample: { userId: '12345678', zoneId: '2104' },
+    sample: { userId: '1114917746', zoneId: '13486' },
     steps: {
       km: [
         'បើកហ្គេម Mobile Legends រួចចុចលើរូប Avatar (Profile) នៅជ្រុងខាងលើឆ្វេងដៃនៃអេក្រង់។',
         'ចូលទៅកាន់ផ្ទាំង "Basic Info" (ព័ត៌មានមូលដ្ឋាន) ក្រោមរូបតំណាងរបស់អ្នក។',
-        'នៅខាងក្រោមឈ្មោះកីឡាករ អ្នកនឹងឃើញលេខសម្គាល់ទម្រង់៖ 12345678 (2104)។',
-        'លេខ 8-10 ខ្ទង់ខាងមុខ (12345678) គឺជា User ID ហើយលេខក្នុងវង់ក្រចក (2104) គឺជា Zone ID!'
+        'នៅខាងក្រោមឈ្មោះកីឡាករ អ្នកនឹងឃើញលេខសម្គាល់ទម្រង់៖ 1114917746 (13486)។',
+        'លេខ 8-10 ខ្ទង់ខាងមុខ គឺជា User ID ហើយលេខក្នុងវង់ក្រចក គឺជា Zone ID!'
       ],
       en: [
         'Open Mobile Legends and tap your Avatar Profile icon in the top-left corner of the main screen.',
         'Go to the "Basic Info" tab located underneath your avatar.',
-        'Below your player name, you will see your ID in this format: 12345678 (2104).',
-        'The 8-10 digits in front (12345678) is your User ID, and the 4-5 digits in parentheses (2104) is your Zone ID!'
+        'Below your player name, you will see your ID in this format: 1114917746 (13486).',
+        'The 8-10 digits in front is your User ID, and the digits in parentheses is your Zone ID!'
       ]
     },
     mockup: {
       avatarText: 'MLBB',
-      playerName: 'AuraSlayer_99',
+      playerName: 'Outrageous Dominance',
       idLabel: 'User ID',
-      idValue: '12345678',
+      idValue: '1114917746',
       zoneLabel: 'Zone ID',
-      zoneValue: '(2104)',
+      zoneValue: '(13486)',
       tip: {
         km: 'ត្រូវប្រាកដថាអ្នកបញ្ចូលទាំង User ID និង Zone ID ទាំងពីរ ដើម្បីឱ្យពេជ្រចូលគណនីបានត្រឹមត្រូវ!',
         en: 'Make sure to enter both User ID and Zone ID so diamonds are injected into the exact account!'
@@ -108,7 +108,7 @@ const GAME_GUIDES: GameGuideData[] = [
     },
     mockup: {
       avatarText: 'FF',
-      playerName: 'BooyahMaster_KH',
+      playerName: 'LsCrowzero',
       idLabel: 'Player ID (UID)',
       idValue: '182749021',
       tip: {

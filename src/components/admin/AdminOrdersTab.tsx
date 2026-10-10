@@ -372,6 +372,12 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({ orders, onRefres
                       <div className="font-mono font-bold text-slate-200">
                         {order.userId} {order.zoneId ? `(${order.zoneId})` : ''}
                       </div>
+                      {order.nickname && (
+                        <div className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1 mt-0.5">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                          <span className="truncate max-w-[160px]">{order.nickname}</span>
+                        </div>
+                      )}
                       <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
                         {order.server && <span className="text-purple-400">Server: {order.server}</span>}
                         {order.whatsapp && (

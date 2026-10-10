@@ -2,92 +2,218 @@ import { fetch as undiciFetch } from 'undici';
 
 /**
  * Free Live In-Game Account & Nickname Checker
- * Queries official game gateway to verify real player existence & nickname
+ * Queries multiple free game gateways to verify real player existence & nickname
  * 100% Free - No paid API keys required
  */
 export async function checkFreeGameNickname(gameId, userId, zoneId, server) {
-  const endpoint = 'https://order-sg.codashop.com/initPayment.action';
   const cleanId = String(userId).trim();
   const cleanZone = String(zoneId || server || '').trim();
 
   if (!cleanId) return null;
 
-  let body = '';
-  switch (gameId) {
-    case 'mobile-legends':
-      if (!cleanZone) return null;
-      body = `voucherPricePoint.id=4150&voucherPricePoint.price=1579.0&voucherPricePoint.variablePrice=0&user.userId=${encodeURIComponent(cleanId)}&user.zoneId=${encodeURIComponent(cleanZone)}&voucherTypeName=MOBILE_LEGENDS&shopLang=en_US&voucherTypeId=1&gvtId=1`;
-      break;
+  // 1. Mobile Legends: Bang Bang
+  if (gameId === 'mobile-legends') {
+    if (!cleanZone) return null;
 
-    case 'free-fire':
-      body = `voucherPricePoint.id=8050&voucherPricePoint.price=1000.0&voucherPricePoint.variablePrice=0&user.userId=${encodeURIComponent(cleanId)}&voucherTypeName=FREEFIRE&shopLang=en_US&voucherTypeId=1&gvtId=1`;
-      break;
+    // Provider A: mlbb-api.isan.eu.org/find
+    try {
+      const res = await undiciFetch(`https://mlbb-api.isan.eu.org/find?id=${encodeURIComponent(cleanId)}&zone=${encodeURIComponent(cleanZone)}`, {
+        signal: AbortSignal.timeout(4000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.success && data.name) {
+          return {
+            success: true,
+            isReal: true,
+            nickname: String(data.name).trim(),
+            userId: cleanId,
+            zoneId: cleanZone,
+            country: data.countryName || 'Global',
+          };
+        }
+      } else if (res.status === 404) {
+        return {
+          success: false,
+          isReal: false,
+          invalidId: true,
+          error: 'រកមិនឃើញគណនី MLBB នេះទេ (Invalid User ID or Zone ID)',
+        };
+      }
+    } catch (e) {
+      console.warn('[MLBB isan find error]', e.message);
+    }
 
-    case 'genshin-impact': {
+    // Provider B: api.isan.eu.org/nickname/ml
+    try {
+      const res = await undiciFetch(`https://api.isan.eu.org/nickname/ml?id=${encodeURIComponent(cleanId)}&server=${encodeURIComponent(cleanZone)}`, {
+        signal: AbortSignal.timeout(4000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.success && data.name) {
+          return {
+            success: true,
+            isReal: true,
+            nickname: String(data.name).trim(),
+            userId: cleanId,
+            zoneId: cleanZone,
+            country: data.country || 'Global',
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('[MLBB isan nick error]', e.message);
+    }
+  }
+
+  // 2. Free Fire
+  if (gameId === 'free-fire') {
+    // Provider A: Gopay Games API (Direct Indonesia/Global SEA cluster)
+    try {
+      const res = await undiciFetch(`https://gopay.co.id/games/v1/order/prepare/FREEFIRE?userId=${encodeURIComponent(cleanId)}`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0',
+        },
+        signal: AbortSignal.timeout(4000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.data && typeof data.data === 'string' && data.data.trim()) {
+          return {
+            success: true,
+            isReal: true,
+            nickname: data.data.trim(),
+            userId: cleanId,
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('[Free Fire Gopay error]', e.message);
+    }
+
+    // Provider B: isan API (Only if name exists)
+    try {
+      const res = await undiciFetch(`https://api.isan.eu.org/nickname/ff?id=${encodeURIComponent(cleanId)}`, {
+        signal: AbortSignal.timeout(4000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.success && data.name && String(data.name).trim()) {
+          return {
+            success: true,
+            isReal: true,
+            nickname: String(data.name).trim(),
+            userId: cleanId,
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('[Free Fire isan error]', e.message);
+    }
+
+    // Provider C: Codashop SG
+    try {
+      const body = `voucherPricePoint.id=8050&voucherPricePoint.price=1000.0&voucherPricePoint.variablePrice=0&user.userId=${encodeURIComponent(cleanId)}&voucherTypeName=FREEFIRE&shopLang=en_US&voucherTypeId=1&gvtId=1`;
+      const res = await undiciFetch('https://order-sg.codashop.com/initPayment.action', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Origin': 'https://www.codashop.com',
+          'Referer': 'https://www.codashop.com/',
+        },
+        body,
+        signal: AbortSignal.timeout(4000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.confirmationFields?.username) {
+          const rawName = data.confirmationFields.username;
+          const decoded = decodeURIComponent(rawName.replace(/\+/g, '%20'));
+          return {
+            success: true,
+            isReal: true,
+            nickname: decoded,
+            userId: cleanId,
+          };
+        }
+        // If Codashop explicitly says Wrong player id (errorCode 12)
+        if (data.errorCode === 12 || (data.errorMsg && data.errorMsg.toLowerCase().includes('wrong player id'))) {
+          return {
+            success: false,
+            isReal: false,
+            invalidId: true,
+            error: 'រកមិនឃើញគណនី Free Fire នេះទេ (Wrong Player ID) សូមពិនិត្យមើលលេខ UID ឡើងវិញ',
+          };
+        }
+        // If Codashop returns errorCode 24 (Topup region blocked for player) -> verified player exists
+        if (data.errorCode === 24 || (data.errorMsg && data.errorMsg.toLowerCase().includes('region blocked'))) {
+          return {
+            success: true,
+            isReal: true,
+            accountExists: true,
+            nickname: null,
+            userId: cleanId,
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('[Free Fire Codashop error]', e.message);
+    }
+  }
+
+  // 3. Genshin Impact & Valorant
+  if (gameId === 'genshin-impact' || gameId === 'valorant') {
+    let body = '';
+    if (gameId === 'genshin-impact') {
       let giZone = 'os_asia';
       if (cleanId.startsWith('6')) giZone = 'os_usa';
       else if (cleanId.startsWith('7')) giZone = 'os_euro';
       else if (cleanId.startsWith('8')) giZone = 'os_asia';
       else if (cleanId.startsWith('9')) giZone = 'os_cht';
       body = `voucherPricePoint.id=116054&voucherPricePoint.price=16500.0&voucherPricePoint.variablePrice=0&user.userId=${encodeURIComponent(cleanId)}&user.zoneId=${giZone}&voucherTypeName=GENSHIN_IMPACT&shopLang=en_US`;
-      break;
+    } else {
+      body = `voucherPricePoint.id=973634&voucherPricePoint.price=56000.0&voucherPricePoint.variablePrice=0&user.userId=${encodeURIComponent(cleanId)}&voucherTypeName=VALORANT&voucherTypeId=109&gvtId=139&shopLang=en_US`;
     }
 
-    case 'valorant':
-      body = `voucherPricePoint.id=115691&voucherPricePoint.price=15000.0&voucherPricePoint.variablePrice=0&user.userId=${encodeURIComponent(cleanId)}&voucherTypeName=VALORANT&voucherTypeId=109&gvtId=139&shopLang=en_US`;
-      break;
-
-    default:
-      return null;
-  }
-
-  try {
-    const res = await undiciFetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-        'Origin': 'https://www.codashop.com',
-        'Referer': 'https://www.codashop.com/',
-      },
-      body,
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      console.log(`[Free Game Checker] ${gameId} Response:`, {
-        success: data.success,
-        errorCode: data.errorCode,
-        errorMsg: data.errorMsg,
-        username: data.confirmationFields?.username,
+    try {
+      const res = await undiciFetch('https://order-sg.codashop.com/initPayment.action', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Origin': 'https://www.codashop.com',
+          'Referer': 'https://www.codashop.com/',
+        },
+        body,
+        signal: AbortSignal.timeout(4500),
       });
 
-      // 1. Success: Player exists and real nickname is found!
-      if (data.success && data.confirmationFields && data.confirmationFields.username) {
-        const rawName = data.confirmationFields.username;
-        const decoded = decodeURIComponent(rawName.replace(/\+/g, '%20'));
-        return {
-          success: true,
-          isReal: true,
-          nickname: decoded,
-          userId: cleanId,
-          zoneId: cleanZone || null,
-          server: server || null,
-        };
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.confirmationFields?.username) {
+          const rawName = data.confirmationFields.username;
+          const decoded = decodeURIComponent(rawName.replace(/\+/g, '%20'));
+          return {
+            success: true,
+            isReal: true,
+            nickname: decoded,
+            userId: cleanId,
+            zoneId: cleanZone || null,
+            server: server || null,
+          };
+        }
+        if (data.errorCode === -100 || (data.errorMsg && data.errorMsg.toLowerCase().includes('invalid user id'))) {
+          return {
+            success: false,
+            isReal: false,
+            invalidId: true,
+            error: 'រកមិនឃើញគណនីហ្គេមនេះទេ (Invalid In-Game User ID)',
+          };
+        }
       }
-
-      // 2. Verified Invalid User ID from game server
-      if (data.errorCode === -100 || (data.errorMsg && data.errorMsg.toLowerCase().includes('invalid user id'))) {
-        return {
-          success: false,
-          isReal: false,
-          invalidId: true,
-          error: 'រកមិនឃើញគណនីហ្គេមនេះទេ (Invalid In-Game User ID) សូមពិនិត្យមើល ID & Zone ឡើងវិញ',
-        };
-      }
+    } catch (e) {
+      console.warn('[Codashop GI/VALO error]', e.message);
     }
-  } catch (err) {
-    console.warn('[Free Game Checker] Network error:', err.message);
   }
 
   return null;
