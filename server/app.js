@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { moogold } from './moogoldService.js';
+import { checkFreeGameNickname } from './freeGameChecker.js';
 
 // Load environment variables
 dotenv.config();
@@ -69,7 +70,35 @@ app.post('/api/validate-account', async (req, res) => {
   const cleanId = String(userId).trim();
   const cleanZone = String(zoneId || '').trim();
 
-  // 1. Try Live MooGold Validation API
+  // 1. Try Free Real-Time Game Nickname Checker (Codashop Gateway)
+  try {
+    const freeCheckResult = await checkFreeGameNickname(gameId, cleanId, cleanZone, server);
+    if (freeCheckResult) {
+      if (freeCheckResult.success && freeCheckResult.isReal && freeCheckResult.nickname) {
+        return res.json({
+          success: true,
+          isReal: true,
+          nickname: freeCheckResult.nickname,
+          userId: cleanId,
+          zoneId: cleanZone || null,
+          server: server || null,
+          provider: 'FREE_LIVE_API',
+          message: `ឈ្មោះកីឡាករពិតប្រាកដ៖ ${freeCheckResult.nickname}`,
+        });
+      }
+      if (freeCheckResult.invalidId) {
+        return res.status(400).json({
+          success: false,
+          invalidId: true,
+          message: freeCheckResult.error || 'រកមិនឃើញគណនីហ្គេមនេះទេ សូមពិនិត្យ ID & Zone ឡើងវិញ',
+        });
+      }
+    }
+  } catch (err) {
+    console.warn('[Validation] Free live check error:', err.message);
+  }
+
+  // 2. Try Live MooGold Validation API
   try {
     const moogoldResult = await moogold.validatePlayer({ gameId, userId: cleanId, zoneId: cleanZone, server });
     if (moogoldResult && moogoldResult.isReal && moogoldResult.nickname) {
@@ -80,6 +109,7 @@ app.post('/api/validate-account', async (req, res) => {
         userId: cleanId,
         zoneId: cleanZone || null,
         server: server || null,
+        provider: 'MOOGOLD_API',
         message: 'គណនីត្រូវបានផ្ទៀងផ្ទាត់ផ្ទាល់ពី Server ហ្គេម',
       });
     }
@@ -87,7 +117,7 @@ app.post('/api/validate-account', async (req, res) => {
     console.warn('[Validation] MooGold live check skipped:', err.message);
   }
 
-  // 2. Game-Specific Format Validation (Honest, accurate, no fake nickname pretending)
+  // 3. Fallback: Game-Specific Format Validation (Honest, accurate, no fake nickname pretending)
   const isMlbb = gameId === 'mobile-legends';
   const isFf = gameId === 'free-fire';
   const isGenshin = gameId === 'genshin-impact';
